@@ -29,7 +29,7 @@
 
     <!-- 하단 네비게이션 바 -->
     <div class="absolute bottom-6 left-0 w-full px-4 flex justify-center z-30 pointer-events-none pb-[env(safe-area-inset-bottom)]">
-      <nav id="bottom-nav" class="pointer-events-auto w-full max-w-[320px] h-[72px] rounded-full flex justify-between items-center px-2 shadow-[0_20px_40px_rgba(0,0,0,0.15),inset_0_2px_5px_rgba(255,255,255,0.9),inset_0_-2px_5px_rgba(255,255,255,0.4)] border border-white/60 bg-white/40 backdrop-blur-3xl">
+      <nav id="bottom-nav" class="pointer-events-auto w-full max-w-[320px] h-[62px] rounded-full flex justify-between items-center px-1.5 shadow-[0_15px_35px_rgba(0,0,0,0.12),inset_0_1px_2px_rgba(255,255,255,0.8)] border border-gray-200/50 bg-white/70 backdrop-blur-2xl">
       </nav>
     </div>
 
@@ -84,8 +84,8 @@
         inAppPurchase: '사용 가능',
         version: '1.0',
         updatedAt: '3월 31일',
-        releaseNotes: '서비스 오픈!\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!\n우리팀은 몇등이었더라? 순위도 확인해보실 수 있습니다.',
-        shortReleaseNotes: '서비스 오픈!\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!....',
+        releaseNotes: '서비스 오픈!\\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!\\n우리팀은 몇등이었더라? 순위도 확인해보실 수 있습니다.',
+        shortReleaseNotes: '서비스 오픈!\\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!....',
         buttonText: '받기',
         bgClass: "bg-gradient-to-br from-teal-200 via-emerald-300 to-teal-500",
         overlayClass: "bg-[#182236]", 
@@ -97,7 +97,7 @@
           {
             title: "간편 홈",
             titleColor: "text-indigo-800",
-            desc: "시청에 최적화된 UI 구성으로\n최근 시청한 경기 이어보기 등의\n기능을 제공합니다.",
+            desc: "시청에 최적화된 UI 구성으로\\n최근 시청한 경기 이어보기 등의\\n기능을 제공합니다.",
             bg: "bg-[#eaf5f4]", 
             mockupColor: "bg-blue-600",
             imageUrl: "https://github.com/won429/enjoystorefw/blob/main/kia.png?raw=true"
@@ -105,7 +105,7 @@
           {
             title: "UI 업데이트",
             titleColor: "text-indigo-800",
-            desc: "중계만 시청할 수 있도록\n야구 데이터 위주로\n새롭게 개편했습니다.",
+            desc: "중계만 시청할 수 있도록\\n야구 데이터 위주로\\n새롭게 개편했습니다.",
             bg: "bg-[#eef2f6]",
             mockupColor: "bg-[#1f2940]",
             imageUrl: "https://github.com/won429/enjoystorefw/blob/main/samsung.png?raw=true"
@@ -113,7 +113,7 @@
           {
             title: "모든 기능",
             titleColor: "text-rose-700",
-            desc: "다양한 기능들을\n지금 바로 경험해보세요.",
+            desc: "다양한 기능들을\\n지금 바로 경험해보세요.",
             bg: "bg-purple-50",
             mockupColor: "bg-gradient-to-b from-purple-400 to-indigo-500",
             imageUrl: "https://github.com/won429/enjoystorefw/blob/main/all.png?raw=true"
@@ -121,7 +121,7 @@
           {
             title: "응원가",
             titleColor: "text-rose-700",
-            desc: "응원가와 함께\n경기를 즐겨보세요.",
+            desc: "응원가와 함께\\n경기를 즐겨보세요.",
             bg: "bg-purple-50",
             mockupColor: "bg-gradient-to-b from-purple-400 to-indigo-500",
             imageUrl: "https://github.com/won429/enjoystorefw/blob/main/music.png?raw=true"
@@ -163,16 +163,18 @@
           {
             title: "간편 매칭",
             titleColor: "text-rose-700",
-            desc: "나에게 최적화된 매칭 UI로\n새로운 인연을 찾아보세요.",
+            desc: "나에게 최적화된 매칭 UI로\\n새로운 인연을 찾아보세요.",
             bg: "bg-rose-50",
-            mockupColor: "bg-gradient-to-b from-rose-400 to-pink-500"
+            mockupColor: "bg-gradient-to-b from-rose-400 to-pink-500",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/enjoymain.png?raw=true"
           },
           {
             title: "안전한 대화",
             titleColor: "text-rose-700",
-            desc: "철저한 인증 시스템으로\n안심하고 대화할 수 있습니다.",
+            desc: "철저한 인증 시스템으로\\n안심하고 대화할 수 있습니다.",
             bg: "bg-pink-50",
-            mockupColor: "bg-gradient-to-b from-pink-400 to-purple-400"
+            mockupColor: "bg-gradient-to-b from-pink-400 to-purple-400",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/moim.png?raw=true"
           }
         ],
       }
@@ -231,7 +233,7 @@
                   </div>
                   <div class="flex items-center justify-between px-4">
                     <div class="flex items-center gap-3">
-                      <div class="w-12 h-12 ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-[20px] font-bold shadow-sm overflow-hidden border border-black/5">
+                      <div class="w-12 h-12 ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-[20px] font-bold shadow-sm overflow-hidden">
                         ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover scale-125" />` : app.iconText}
                       </div>
                       <div class="flex flex-col">
@@ -276,7 +278,7 @@
             ${APPS.map((app, index) => `
               <div class="flex items-center gap-3 cursor-pointer group" onclick="openApp('${app.id}')">
                 <div class="w-4 text-center font-bold text-gray-900 text-[15px]">${index + 1}</div>
-                <div class="w-[52px] h-[52px] flex-shrink-0 ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-xl font-black shadow-sm group-hover:scale-105 transition-transform overflow-hidden border border-black/5">
+                <div class="w-[52px] h-[52px] flex-shrink-0 ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-xl font-black shadow-sm group-hover:scale-105 transition-transform overflow-hidden">
                   ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover scale-125" />` : app.iconText}
                 </div>
                 <div class="flex-1 border-b border-gray-100 pb-4 flex justify-between items-center">
@@ -357,7 +359,7 @@
         <div class="flex flex-col gap-4">
           ${filtered.length > 0 ? filtered.map(app => `
             <div class="flex items-center gap-3 cursor-pointer" onclick="openApp('${app.id}')">
-              <div class="w-[52px] h-[52px] ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-xl font-black shadow-sm overflow-hidden border border-black/5">
+              <div class="w-[52px] h-[52px] ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-xl font-black shadow-sm overflow-hidden">
                 ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover scale-125" />` : app.iconText}
               </div>
               <div class="flex-1 flex justify-between items-center border-b border-gray-100 pb-3">
@@ -387,24 +389,40 @@
       const navEl = document.getElementById('bottom-nav');
       
       const icons = {
-        '투데이': (active) => `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="3"></rect><line x1="4" y1="8" x2="20" y2="8"></line><rect x="7" y="11.5" width="10" height="7" rx="1.5" fill="${active ? 'currentColor' : 'none'}" stroke="${active ? 'none' : 'currentColor'}"></rect></svg>`,
-        '앱': () => `<svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 12l10 5 10-5-2.5-1.25L12 14.5 4.5 10.75 2 12z"></path><path d="M2 17l10 5 10-5-2.5-1.25L12 19.5 4.5 15.75 2 17z"></path></svg>`,
-        '검색': () => `<svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>`
+        '투데이': (active) => `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="18" rx="4"></rect>
+            <path d="M4 8.5h16"></path>
+            <rect x="7" y="12.5" width="10" height="5.5" rx="1.5" fill="currentColor" stroke="none"></rect>
+          </svg>`,
+        '앱': (active) => `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round">
+            <polygon points="12 4 4 8 12 12 20 8 12 4" ${active ? 'fill="currentColor"' : ''}></polygon>
+            <polyline points="4 12.5 12 16.5 20 12.5" stroke-linecap="round"></polyline>
+            <polyline points="4 17 12 21 20 17" stroke-linecap="round"></polyline>
+          </svg>`,
+        '검색': (active) => `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10.5" cy="10.5" r="6.5"></circle>
+            <line x1="15.5" y1="15.5" x2="21" y2="21"></line>
+          </svg>`
       };
 
       navEl.innerHTML = ['투데이', '앱', '검색'].map(tab => {
         const active = activeTab === tab;
         return `
-          <div class="relative flex-1 h-[56px] flex justify-center items-center">
-            ${active ? '<div class="absolute w-[88%] h-[100%] bg-white/60 backdrop-blur-md rounded-full z-0 shadow-sm border border-white/60"></div>' : ''}
+          <div class="relative flex-1 h-full flex justify-center items-center">
+            ${active ? `
+              <div class="absolute top-[4px] bottom-[4px] left-0 right-0 bg-[#f2f2f2] shadow-[0_2px_10px_rgba(0,0,0,0.06),inset_0_1px_1px_rgba(255,255,255,1)] border border-gray-200/40 rounded-full z-0 animate-in fade-in zoom-in duration-200"></div>
+            ` : ''}
             <button 
               onclick="window.setTab('${tab}')"
-              class="relative flex flex-col items-center justify-center gap-[2px] w-full h-full z-10 ${active ? 'text-[#1C68F2]' : 'text-gray-600'}"
+              class="relative flex flex-col items-center justify-center gap-[2px] w-full h-full z-10 ${active ? 'text-[#1C68F2]' : 'text-[#444]'}"
             >
-              <div class="transition-transform duration-200 ${active ? 'scale-105' : 'scale-100'}">
+              <div class="transition-all duration-300 ${active ? 'scale-105' : 'scale-100'} mt-0.5">
                 ${icons[tab](active)}
               </div>
-              <span class="text-[11px] font-[800] tracking-tight">${tab}</span>
+              <span class="text-[10px] font-bold tracking-tight">${tab}</span>
             </button>
           </div>
         `;
@@ -436,7 +454,7 @@
         ` : `
         <div class="w-[260px] sm:w-[280px] h-[460px] flex-shrink-0 ${s.bg} rounded-[32px] flex flex-col pt-10 relative overflow-hidden shadow-sm border border-black/5">
           <h3 class="text-[22px] font-black ${s.titleColor} mb-2 text-center">${s.title}</h3>
-          <p class="text-[14px] text-[#555] text-center px-6 leading-relaxed font-medium">${s.desc.replace(/\n/g, '<br/>')}</p>
+          <p class="text-[14px] text-[#555] text-center px-6 leading-relaxed font-medium">${s.desc.replace(/\\n/g, '<br/>')}</p>
           
           <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-[220px] h-[340px] bg-white rounded-t-[32px] shadow-[0_-5px_20px_rgba(0,0,0,0.06)] border-[6px] border-white overflow-hidden flex flex-col">
             <div class="w-full h-[40px] bg-white flex justify-center items-center relative border-b border-gray-100/80">
@@ -463,7 +481,7 @@
         </div>
         
         <div class="px-5 flex gap-4 mt-1">
-          <div class="w-[100px] h-[100px] ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-4xl font-black shadow-md overflow-hidden border border-black/5">
+          <div class="w-[84px] h-[84px] ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-4xl font-black shadow-md overflow-hidden">
             ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover scale-125" />` : app.iconText}
           </div>
           <div class="flex-1 flex flex-col justify-center">
@@ -546,7 +564,7 @@
              <span class="text-[13px] text-gray-500 font-medium">${app.updatedAt}</span>
            </div>
            <p class="text-[14px] text-gray-800 leading-relaxed font-medium">
-             ${(app.shortReleaseNotes || app.releaseNotes).replace(/\n/g, '<br/>')}
+             ${(app.shortReleaseNotes || app.releaseNotes).replace(/\\n/g, '<br/>')}
            </p>
         </div>
         ` : ''}
@@ -801,7 +819,7 @@
               <span class="text-[14px] text-gray-500 font-medium">${selectedApp.updatedAt}</span>
             </div>
             <p class="text-[15px] text-gray-800 leading-relaxed font-medium">
-              ${selectedApp.releaseNotes.replace(/\n/g, '<br/>')}
+              ${selectedApp.releaseNotes.replace(/\\n/g, '<br/>')}
             </p>
           </div>
         </div>
