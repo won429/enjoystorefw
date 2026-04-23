@@ -91,6 +91,7 @@
         overlayClass: "bg-[#336b64]", 
         iconBg: "bg-blue-600",
         iconText: "K",
+        iconUrl: "https://github.com/won429/enjoystorefw/blob/main/kbo.png?raw=true",
         screenshots: [
           {
             title: "간편 홈",
@@ -201,7 +202,7 @@
     function getTodayHTML() {
       return `
         <section class="px-4 pb-32 pt-12 sm:pt-6 flex flex-col gap-8">
-          <div class="px-2 mb-2">
+          <div class="px-2 -mb-6">
             <h1 class="text-[32px] font-extrabold tracking-tight text-gray-900">투데이</h1>
           </div>
           ${APPS.map(app => `
@@ -226,8 +227,8 @@
                   </div>
                   <div class="flex items-center justify-between px-4">
                     <div class="flex items-center gap-3">
-                      <div class="w-12 h-12 ${app.iconBg} rounded-[10px] flex items-center justify-center text-white text-[20px] font-bold shadow-sm">
-                        ${app.iconText}
+                      <div class="w-12 h-12 ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-[20px] font-bold shadow-sm overflow-hidden border border-black/5">
+                        ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover" />` : app.iconText}
                       </div>
                       <div class="flex flex-col">
                         <span class="text-[13px] font-bold mb-0.5">${app.title}</span>
@@ -260,8 +261,8 @@
             ${APPS.map((app, index) => `
               <div class="flex items-center gap-3 cursor-pointer group" onclick="openApp('${app.id}')">
                 <div class="w-4 text-center font-bold text-gray-900 text-[15px]">${index + 1}</div>
-                <div class="w-[52px] h-[52px] flex-shrink-0 ${app.iconBg} rounded-[12px] flex items-center justify-center text-white text-xl font-black shadow-sm group-hover:scale-105 transition-transform">
-                  ${app.iconText}
+                <div class="w-[52px] h-[52px] flex-shrink-0 ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-xl font-black shadow-sm group-hover:scale-105 transition-transform overflow-hidden border border-black/5">
+                  ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover" />` : app.iconText}
                 </div>
                 <div class="flex-1 border-b border-gray-100 pb-4 flex justify-between items-center">
                   <div>
@@ -331,7 +332,9 @@
         <div class="flex flex-col gap-4">
           ${filtered.length > 0 ? filtered.map(app => `
             <div class="flex items-center gap-3 cursor-pointer" onclick="openApp('${app.id}')">
-              <div class="w-[52px] h-[52px] ${app.iconBg} rounded-[12px] flex items-center justify-center text-white text-xl font-black shadow-sm">${app.iconText}</div>
+              <div class="w-[52px] h-[52px] ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-xl font-black shadow-sm overflow-hidden border border-black/5">
+                ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover" />` : app.iconText}
+              </div>
               <div class="flex-1 flex justify-between items-center border-b border-gray-100 pb-3">
                 <div>
                   <h4 class="font-semibold text-gray-900 text-[14px]">${app.title}</h4>
@@ -425,8 +428,8 @@
         </div>
         
         <div class="px-5 flex gap-4 mt-1">
-          <div class="w-[100px] h-[100px] ${app.iconBg} rounded-[22px] flex items-center justify-center text-white text-4xl font-black shadow-md">
-            ${app.iconText}
+          <div class="w-[100px] h-[100px] ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-4xl font-black shadow-md overflow-hidden border border-black/5">
+            ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover" />` : app.iconText}
           </div>
           <div class="flex-1 flex flex-col justify-center">
             <h1 class="text-[20px] font-bold text-gray-900 leading-tight mb-1">${app.title}</h1>
@@ -714,6 +717,29 @@
       content.classList.toggle('hidden');
       if (icon) icon.classList.toggle('rotate-180');
     };
+
+    // --- 갤럭시(Android) 앱 설치 여부 확인 로직 ---
+    if (currentCompatibility.includes('Galaxy')) {
+      const checkAndApplyOpenStatus = () => {
+        const targetApp = APPS.find(a => a.id === 'enjoy_sports');
+        if (targetApp) {
+          targetApp.buttonText = '열기';
+          renderMain(); // 메인 화면 버튼 업데이트
+          if (selectedApp && selectedApp.id === targetApp.id) renderModal(); // 모달이 열려있다면 모달 버튼도 업데이트
+        }
+      };
+      
+      // 안드로이드 웹 표준 API를 사용하여 설치된 앱 감지 (실제 서비스 시 서버에 assetlinks.json 필요)
+      if ('getInstalledRelatedApps' in navigator) {
+        navigator.getInstalledRelatedApps().then(apps => {
+          // 설치가 확인되면 '열기'로 변경 (현재는 테스트를 위해 무조건 작동하도록 시뮬레이션)
+          checkAndApplyOpenStatus();
+        }).catch(e => console.error(e));
+      } else {
+        // 구형 브라우저 등 API 미지원 환경 시뮬레이션
+        checkAndApplyOpenStatus();
+      }
+    }
 
     // --- 초기 렌더링 ---
     renderAll();
