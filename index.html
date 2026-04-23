@@ -236,12 +236,23 @@
                       </div>
                     </div>
                     <div class="flex flex-col items-center">
-                      <button 
-                        onclick="event.stopPropagation(); openApp('${app.id}');"
-                        class="bg-white/20 hover:bg-white/30 backdrop-blur-md w-auto px-4 min-w-[64px] py-1.5 rounded-full text-[13px] font-bold transition mb-1 whitespace-nowrap"
-                      >
-                        ${app.buttonText || '받기'}
-                      </button>
+                      ${app.isDownloading ? 
+                        `<div class="w-auto min-w-[64px] h-[32px] mb-1 flex items-center justify-center text-white cursor-default" onclick="event.stopPropagation();">
+                           <svg class="w-[28px] h-[28px]" viewBox="0 0 36 36">
+                             <circle cx="18" cy="18" r="14" fill="none" class="stroke-current opacity-30" stroke-width="2.5"></circle>
+                             <circle cx="18" cy="18" r="14" fill="none" class="stroke-current progress-circle-${app.id}" style="transition: stroke-dashoffset 0.1s linear;" stroke-width="2.5" stroke-dasharray="88" stroke-dashoffset="${88 - (88 * (app.progress || 0) / 100)}" stroke-linecap="round" transform="rotate(-90 18 18)"></circle>
+                             <rect x="13.5" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                             <rect x="20" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                           </svg>
+                         </div>` :
+                        `<button 
+                          onclick="if('${app.buttonText}' !== '완료') { window.handleDownload(event, '${app.id}'); } else { event.stopPropagation(); }"
+                          class="${app.buttonText === '완료' ? 'bg-white/10 text-white/50 cursor-default' : 'bg-white/20 hover:bg-white/30'} backdrop-blur-md w-auto px-4 min-w-[64px] py-1.5 rounded-full text-[13px] font-bold transition mb-1 whitespace-nowrap"
+                          ${app.buttonText === '완료' ? 'disabled' : ''}
+                        >
+                          ${app.buttonText || '받기'}
+                        </button>`
+                      }
                       <span class="text-[9px] text-white/60 font-medium">앱 내 구입</span>
                     </div>
                   </div>
@@ -269,9 +280,19 @@
                     <h4 class="font-semibold text-gray-900 text-[14px] mb-0.5">${app.title}</h4>
                     <p class="text-[12px] text-gray-500">${app.category}</p>
                   </div>
-                  <button onclick="event.stopPropagation(); openApp('${app.id}');" class="bg-gray-100 hover:bg-gray-200 text-blue-600 px-4 py-1 rounded-full text-[12px] font-bold transition whitespace-nowrap">
-                    ${app.buttonText || '받기'}
-                  </button>
+                  ${app.isDownloading ?
+                    `<div class="w-[60px] h-[28px] flex items-center justify-center text-blue-600 cursor-default" onclick="event.stopPropagation();">
+                       <svg class="w-[28px] h-[28px]" viewBox="0 0 36 36">
+                         <circle cx="18" cy="18" r="14" fill="none" class="stroke-current opacity-20" stroke-width="2.5"></circle>
+                         <circle cx="18" cy="18" r="14" fill="none" class="stroke-current progress-circle-${app.id}" style="transition: stroke-dashoffset 0.1s linear;" stroke-width="2.5" stroke-dasharray="88" stroke-dashoffset="${88 - (88 * (app.progress || 0) / 100)}" stroke-linecap="round" transform="rotate(-90 18 18)"></circle>
+                         <rect x="13.5" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                         <rect x="20" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                       </svg>
+                     </div>` :
+                    `<button onclick="if('${app.buttonText}' !== '완료') { window.handleDownload(event, '${app.id}'); } else { event.stopPropagation(); }" class="${app.buttonText === '완료' ? 'bg-gray-200 text-gray-400 cursor-default' : 'bg-gray-100 hover:bg-gray-200 text-blue-600'} px-4 py-1 rounded-full text-[12px] font-bold transition whitespace-nowrap" ${app.buttonText === '완료' ? 'disabled' : ''}>
+                      ${app.buttonText || '받기'}
+                    </button>`
+                  }
                 </div>
               </div>
             `).join('')}
@@ -340,7 +361,17 @@
                   <h4 class="font-semibold text-gray-900 text-[14px]">${app.title}</h4>
                   <p class="text-[12px] text-gray-500">${app.category}</p>
                 </div>
-                <button class="bg-gray-100 text-blue-600 px-4 py-1 rounded-full text-[12px] font-bold whitespace-nowrap">${app.buttonText || '받기'}</button>
+                ${app.isDownloading ?
+                  `<div class="w-[60px] h-[28px] flex items-center justify-center text-blue-600 cursor-default" onclick="event.stopPropagation();">
+                     <svg class="w-[28px] h-[28px]" viewBox="0 0 36 36">
+                       <circle cx="18" cy="18" r="14" fill="none" class="stroke-current opacity-20" stroke-width="2.5"></circle>
+                       <circle cx="18" cy="18" r="14" fill="none" class="stroke-current progress-circle-${app.id}" style="transition: stroke-dashoffset 0.1s linear;" stroke-width="2.5" stroke-dasharray="88" stroke-dashoffset="${88 - (88 * (app.progress || 0) / 100)}" stroke-linecap="round" transform="rotate(-90 18 18)"></circle>
+                       <rect x="13.5" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                       <rect x="20" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                     </svg>
+                   </div>` :
+                  `<button onclick="if('${app.buttonText}' !== '완료') { window.handleDownload(event, '${app.id}'); } else { event.stopPropagation(); }" class="${app.buttonText === '완료' ? 'bg-gray-200 text-gray-400 cursor-default' : 'bg-gray-100 text-blue-600'} px-4 py-1 rounded-full text-[12px] font-bold whitespace-nowrap" ${app.buttonText === '완료' ? 'disabled' : ''}>${app.buttonText || '받기'}</button>`
+                }
               </div>
             </div>
           `).join('') : '<div class="text-center py-10 text-gray-400 text-sm">검색 결과가 없습니다.</div>'}
@@ -434,7 +465,17 @@
           <div class="flex-1 flex flex-col justify-center">
             <h1 class="text-[20px] font-bold text-gray-900 leading-tight mb-1">${app.title}</h1>
             <p class="text-[13px] text-gray-500 mb-3">${app.developer}</p>
-            <button class="bg-blue-500 hover:bg-blue-600 text-white w-[72px] py-1.5 rounded-full text-[14px] font-bold transition flex items-center justify-center">${app.buttonText || '받기'}</button>
+            ${app.isDownloading ?
+              `<div class="w-[72px] h-[32px] flex items-center justify-center text-blue-500 cursor-default" onclick="event.stopPropagation();">
+                 <svg class="w-[28px] h-[28px]" viewBox="0 0 36 36">
+                   <circle cx="18" cy="18" r="14" fill="none" class="stroke-current opacity-20" stroke-width="2.5"></circle>
+                   <circle cx="18" cy="18" r="14" fill="none" class="stroke-current progress-circle-${app.id}" style="transition: stroke-dashoffset 0.1s linear;" stroke-width="2.5" stroke-dasharray="88" stroke-dashoffset="${88 - (88 * (app.progress || 0) / 100)}" stroke-linecap="round" transform="rotate(-90 18 18)"></circle>
+                   <rect x="13.5" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                   <rect x="20" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                 </svg>
+               </div>` :
+              `<button onclick="if('${app.buttonText}' !== '완료') { window.handleDownload(event, '${app.id}'); }" class="${app.buttonText === '완료' ? 'bg-gray-200 text-gray-400 cursor-default' : 'bg-blue-500 hover:bg-blue-600 text-white'} w-[72px] py-1.5 rounded-full text-[14px] font-bold transition flex items-center justify-center" ${app.buttonText === '완료' ? 'disabled' : ''}>${app.buttonText || '받기'}</button>`
+            }
           </div>
         </div>
         
@@ -675,6 +716,42 @@
         resultsContainer.innerHTML = getSearchResultsHTML();
       }
       setTimeout(() => lucide.createIcons(), 0);
+    };
+
+    window.handleDownload = function(event, appId) {
+      if (event) event.stopPropagation();
+      const targetApp = APPS.find(a => a.id === appId);
+      
+      if (targetApp && !targetApp.isDownloading && targetApp.buttonText !== '완료') {
+        // 다운로드 상태 시작
+        targetApp.isDownloading = true;
+        targetApp.progress = 0;
+        
+        // 프로그레스 바 렌더링
+        renderMain();
+        if (selectedApp && selectedApp.id === appId) renderModal();
+        
+        // 애니메이션 작동 (약 1.5초 동안 채워짐)
+        const intervalId = setInterval(() => {
+          targetApp.progress += 2; // 진행 속도 조절 가능
+          
+          if (targetApp.progress >= 100) {
+            clearInterval(intervalId);
+            targetApp.isDownloading = false;
+            targetApp.buttonText = '완료';
+            
+            // 완료 상태 렌더링 및 이 시점에 추후 파일 설치 로직 추가 가능
+            renderMain();
+            if (selectedApp && selectedApp.id === appId) renderModal();
+          } else {
+            // 전체 화면 깜빡임 방지를 위해 SVG stroke 속성만 실시간 업데이트
+            const circles = document.querySelectorAll('.progress-circle-' + appId);
+            circles.forEach(circle => {
+              circle.style.strokeDashoffset = 88 - (88 * targetApp.progress / 100);
+            });
+          }
+        }, 30);
+      }
     };
 
     window.openApp = function(appId) {
