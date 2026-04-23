@@ -77,16 +77,14 @@
             titleColor: "text-rose-700",
             desc: "나에게 최적화된 매칭 UI로\n새로운 인연을 찾아보세요.",
             bg: "bg-rose-50",
-            mockupColor: "bg-gradient-to-b from-rose-400 to-pink-500",
-            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/kia.png?raw=true"
+            mockupColor: "bg-gradient-to-b from-rose-400 to-pink-500"
           },
           {
             title: "안전한 대화",
             titleColor: "text-rose-700",
             desc: "철저한 인증 시스템으로\n안심하고 대화할 수 있습니다.",
             bg: "bg-pink-50",
-            mockupColor: "bg-gradient-to-b from-pink-400 to-purple-400",
-            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/samsung.png?raw=true"
+            mockupColor: "bg-gradient-to-b from-pink-400 to-purple-400"
           }
         ],
       },
@@ -100,20 +98,21 @@
         title: 'KBO (엔조이스포츠)',
         subtitle: '힐링 성인 색칠북 (스포츠)',
         category: '스포츠',
-        rating: '4.6',
-        ratingCount: '4.6천',
-        age: '전체',
+        rating: '0',
+        ratingCount: '0',
+        age: '15+',
         ageDesc: '세',
-        chart: '#33',
+        chart: '#1',
         chartCategory: '교육',
-        developer: 'EBS(한국교육방송공사)',
+        developer: 'enjoy studio',
         size: '52.8 MB',
         compatibility: '이 iPhone에서 사용 가능',
-        language: '한국어 외 2개',
+        language: '한국어와 영어',
         inAppPurchase: '사용 가능',
-        version: '1.5.0',
-        updatedAt: '1주 전',
-        releaseNotes: '학습에 최적화된 UI 구성으로 일부 기능을 개선했습니다.',
+        version: '1.0',
+        updatedAt: '3월 31일',
+        releaseNotes: '서비스 오픈!\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!\n우리팀은 몇등이었더라? 순위도 확인해보실 수 있습니다.',
+        shortReleaseNotes: '서비스 오픈!\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!....',
         buttonText: '받기',
         bgClass: "bg-gradient-to-br from-teal-200 via-emerald-300 to-teal-500",
         overlayClass: "bg-[#336b64]", 
@@ -125,14 +124,32 @@
             titleColor: "text-indigo-800",
             desc: "시청에 최적화된 UI 구성으로\n최근 시청한 경기 이어보기 등의\n기능을 제공합니다.",
             bg: "bg-[#eaf5f4]", 
-            mockupColor: "bg-blue-600"
+            mockupColor: "bg-blue-600",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/kia.png?raw=true"
           },
           {
             title: "UI 업데이트",
             titleColor: "text-indigo-800",
             desc: "중계만 시청할 수 있도록\n야구 데이터 위주로\n새롭게 개편했습니다.",
             bg: "bg-[#eef2f6]",
-            mockupColor: "bg-[#1f2940]"
+            mockupColor: "bg-[#1f2940]",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/samsung.png?raw=true"
+          },
+          {
+            title: "모든 기능",
+            titleColor: "text-rose-700",
+            desc: "다양한 기능들을\n지금 바로 경험해보세요.",
+            bg: "bg-purple-50",
+            mockupColor: "bg-gradient-to-b from-purple-400 to-indigo-500",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/all.png?raw=true"
+          },
+          {
+            title: "응원가",
+            titleColor: "text-rose-700",
+            desc: "응원가와 함께\n경기를 즐겨보세요.",
+            bg: "bg-purple-50",
+            mockupColor: "bg-gradient-to-b from-purple-400 to-indigo-500",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/music.png?raw=true"
           }
         ],
       }
@@ -395,7 +412,7 @@
           <div class="flex-1 flex flex-col justify-center">
             <h1 class="text-[20px] font-bold text-gray-900 leading-tight mb-1">${app.title}</h1>
             <p class="text-[13px] text-gray-500 mb-3">${app.developer}</p>
-            <button class="bg-blue-500 hover:bg-blue-600 text-white w-auto px-4 min-w-[68px] py-1.5 rounded-full text-[13px] font-bold transition whitespace-nowrap">${app.buttonText || '받기'}</button>
+            <button class="bg-blue-500 hover:bg-blue-600 text-white w-[72px] py-1.5 rounded-full text-[14px] font-bold transition flex items-center justify-center">${app.buttonText || '받기'}</button>
           </div>
         </div>
         
@@ -446,7 +463,7 @@
              <span class="text-[14px] text-gray-500 font-medium">${app.updatedAt}</span>
            </div>
            <p class="text-[15px] text-gray-800 leading-relaxed font-medium">
-             ${app.releaseNotes.replace(/\n/g, '<br/>')}
+             ${(app.shortReleaseNotes || app.releaseNotes).replace(/\n/g, '<br/>')}
            </p>
         </div>
         ` : ''}
@@ -472,34 +489,92 @@
                <span class="text-[13px] text-gray-400 font-medium">카테고리</span>
                <span class="text-[13px] text-gray-900 font-medium">${app.category}</span>
              </div>
-             <div class="flex justify-between items-center py-3 border-b border-gray-100 cursor-pointer">
-               <span class="text-[13px] text-gray-400 font-medium">호환성</span>
-               <div class="flex items-center gap-1">
-                 <span class="text-[13px] text-gray-900 font-medium">${app.compatibility}</span>
-                 <i data-lucide="chevron-down" class="text-gray-400" style="width:16px;height:16px;"></i>
+             
+             <div class="border-b border-gray-100">
+               <div class="flex justify-between items-center py-3 cursor-pointer" onclick="window.toggleAccordion(this.nextElementSibling, this.querySelector('.chevron-icon'))">
+                 <span class="text-[13px] text-gray-400 font-medium">호환성</span>
+                 <div class="flex items-center gap-1">
+                   <span class="text-[13px] text-gray-900 font-medium">${app.compatibility}</span>
+                   <i data-lucide="chevron-down" class="text-gray-400 chevron-icon transition-transform duration-200" style="width:16px;height:16px;"></i>
+                 </div>
+               </div>
+               <div class="hidden pb-3">
+                 <div class="flex flex-col gap-3 mt-1">
+                   <div>
+                     <span class="text-[13px] font-bold text-gray-900">iPhone</span><br>
+                     <span class="text-[13px] text-gray-500">iOS 26.0 이상 필요</span>
+                   </div>
+                   <div>
+                     <span class="text-[13px] font-bold text-gray-900">iPad</span><br>
+                     <span class="text-[13px] text-gray-500">iPadOS 26.0 이상 필요</span>
+                   </div>
+                   <div>
+                     <span class="text-[13px] font-bold text-gray-900">Mac</span><br>
+                     <span class="text-[13px] text-gray-500">macOS 26.0 이상 필요</span>
+                   </div>
+                   <div>
+                     <span class="text-[13px] font-bold text-gray-900">Galaxy</span><br>
+                     <span class="text-[13px] text-gray-500">Android 14, OneUI 6.0 이상 필요</span>
+                   </div>
+                   <div>
+                     <span class="text-[13px] font-bold text-gray-900">Windows</span><br>
+                     <span class="text-[13px] text-gray-500">Windows 11 전 버전 이상 필요</span>
+                   </div>
+                 </div>
                </div>
              </div>
-             <div class="flex justify-between items-center py-3 border-b border-gray-100 cursor-pointer">
-               <span class="text-[13px] text-gray-400 font-medium">언어</span>
-               <div className="flex items-center gap-1">
-                 <span class="text-[13px] text-gray-900 font-medium">${app.language}</span>
-                 <i data-lucide="chevron-down" class="text-gray-400" style="width:16px;height:16px;"></i>
+
+             <div class="border-b border-gray-100">
+               <div class="flex justify-between items-center py-3 cursor-pointer" onclick="window.toggleAccordion(this.nextElementSibling, this.querySelector('.chevron-icon'))">
+                 <span class="text-[13px] text-gray-400 font-medium">언어</span>
+                 <div class="flex items-center gap-1">
+                   <span class="text-[13px] text-gray-900 font-medium">${app.language}</span>
+                   <i data-lucide="chevron-down" class="text-gray-400 chevron-icon transition-transform duration-200" style="width:16px;height:16px;"></i>
+                 </div>
+               </div>
+               <div class="hidden pb-3">
+                 <div class="mt-1">
+                   <span class="text-[13px] text-gray-500">한국어, 영어</span>
+                 </div>
                </div>
              </div>
-             <div class="flex justify-between items-center py-3 border-b border-gray-100 cursor-pointer">
-               <span class="text-[13px] text-gray-400 font-medium">연령 등급</span>
-               <div class="flex items-center gap-1">
-                 <span class="text-[13px] text-gray-900 font-medium">${app.age}</span>
-                 <i data-lucide="chevron-down" class="text-gray-400" style="width:16px;height:16px;"></i>
+
+             <div class="border-b border-gray-100">
+               <div class="flex justify-between items-center py-3 cursor-pointer" onclick="window.toggleAccordion(this.nextElementSibling, this.querySelector('.chevron-icon'))">
+                 <span class="text-[13px] text-gray-400 font-medium">연령 등급</span>
+                 <div class="flex items-center gap-1">
+                   <span class="text-[13px] text-gray-900 font-medium">${app.age}</span>
+                   <i data-lucide="chevron-down" class="text-gray-400 chevron-icon transition-transform duration-200" style="width:16px;height:16px;"></i>
+                 </div>
+               </div>
+               <div class="hidden pb-3">
+                 <div class="mt-1 flex flex-col items-start gap-1">
+                   <span class="text-[13px] font-bold text-blue-500 border border-blue-500 rounded px-1">${app.age}</span>
+                   <span class="text-[13px] text-blue-500 mt-1 cursor-pointer font-medium">더 알아보기</span>
+                 </div>
                </div>
              </div>
-             <div class="flex justify-between items-center py-3 border-b border-gray-100 cursor-pointer">
-               <span class="text-[13px] text-gray-400 font-medium">앱 내 구입</span>
-               <div class="flex items-center gap-1">
-                 <span class="text-[13px] text-gray-900 font-medium">${app.inAppPurchase}</span>
-                 <i data-lucide="chevron-down" class="text-gray-400" style="width:16px;height:16px;"></i>
+
+             <div class="border-b border-gray-100">
+               <div class="flex justify-between items-center py-3 cursor-pointer" onclick="window.toggleAccordion(this.nextElementSibling, this.querySelector('.chevron-icon'))">
+                 <span class="text-[13px] text-gray-400 font-medium">앱 내 구입</span>
+                 <div class="flex items-center gap-1">
+                   <span class="text-[13px] text-gray-900 font-medium">${app.inAppPurchase}</span>
+                   <i data-lucide="chevron-down" class="text-gray-400 chevron-icon transition-transform duration-200" style="width:16px;height:16px;"></i>
+                 </div>
+               </div>
+               <div class="hidden pb-3">
+                 <div class="mt-1 flex flex-col gap-2">
+                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">평생 사용 버전</span><span class="text-[13px] text-gray-900 font-medium">₩55,000</span></div>
+                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">개인 월간(1개월)</span><span class="text-[13px] text-gray-900 font-medium">₩3,000</span></div>
+                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">개인 연간(1년)</span><span class="text-[13px] text-gray-900 font-medium">₩27,000</span></div>
+                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">팀 월간(1개월)</span><span class="text-[13px] text-gray-900 font-medium">₩9,000</span></div>
+                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">팀 연간(1년)</span><span class="text-[13px] text-gray-900 font-medium">₩86,000</span></div>
+                   <span class="text-[13px] text-blue-500 mt-1 cursor-pointer font-medium">더 알아보기</span>
+                 </div>
                </div>
              </div>
+
              <div class="flex justify-between items-center py-3 border-b border-gray-100">
                <span class="text-[13px] text-gray-400 font-medium">저작권</span>
                <span class="text-[13px] text-gray-900 font-medium">©2026 ${app.developer}</span>
@@ -614,6 +689,11 @@
       `;
       document.getElementById('modal-container').insertAdjacentHTML('beforeend', detailHTML);
       lucide.createIcons();
+    };
+
+    window.toggleAccordion = function(content, icon) {
+      content.classList.toggle('hidden');
+      if (icon) icon.classList.toggle('rotate-180');
     };
 
     // --- 초기 렌더링 ---
