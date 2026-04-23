@@ -40,54 +40,27 @@
   </div>
 
   <script>
+    // --- 기기 판별 로직 ---
+    function getDeviceCompatibility() {
+      const ua = navigator.userAgent;
+      let device = 'iPhone'; // 기본값
+      if (/iPad/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+        device = 'iPad';
+      } else if (/iPhone/i.test(ua)) {
+        device = 'iPhone';
+      } else if (/Mac/i.test(ua)) {
+        device = 'Mac';
+      } else if (/SM-|SAMSUNG|Galaxy/i.test(ua) || /Android/i.test(ua)) {
+        device = 'Galaxy';
+      } else if (/Windows/i.test(ua)) {
+        device = 'Windows';
+      }
+      return '이 ' + device + '에서 사용 가능';
+    }
+    const currentCompatibility = getDeviceCompatibility();
+
     // --- 앱 데이터 ---
     const APPS = [
-      {
-        id: 'enjoy_main',
-        cardHeader: '추억을 떠올리고 싶다면',
-        badge: '출시 예정',
-        updateTag: '대규모 업데이트',
-        bannerTitle: '은랑 LV.999 등장!',
-        bannerSubtitle: '<엔조이> 신규 업데이트 출시.',
-        title: '엔조이',
-        subtitle: '은하 판타지 RPG (소셜)',
-        category: '소셜 네트워킹',
-        rating: '0',
-        ratingCount: '0',
-        age: '15+',
-        ageDesc: '앱 내 제어',
-        chart: '#2',
-        chartCategory: '소셜',
-        developer: 'enjoy Corp.',
-        size: '151.5 MB',
-        compatibility: '이 iPhone에서 사용 가능',
-        language: '한국어 외 9개',
-        inAppPurchase: '사용 가능',
-        version: '1.260416.0',
-        updatedAt: '2일 전',
-        releaseNotes: '',
-        buttonText: '출시예정',
-        bgClass: "bg-gradient-to-br from-purple-400 via-purple-500 to-indigo-500",
-        overlayClass: "bg-[#6d28d9]", 
-        iconBg: "bg-gradient-to-br from-pink-500 to-rose-600",
-        iconText: "E",
-        screenshots: [
-          {
-            title: "간편 매칭",
-            titleColor: "text-rose-700",
-            desc: "나에게 최적화된 매칭 UI로\n새로운 인연을 찾아보세요.",
-            bg: "bg-rose-50",
-            mockupColor: "bg-gradient-to-b from-rose-400 to-pink-500"
-          },
-          {
-            title: "안전한 대화",
-            titleColor: "text-rose-700",
-            desc: "철저한 인증 시스템으로\n안심하고 대화할 수 있습니다.",
-            bg: "bg-pink-50",
-            mockupColor: "bg-gradient-to-b from-pink-400 to-purple-400"
-          }
-        ],
-      },
       {
         id: 'enjoy_sports',
         cardHeader: '야구팬들은 못참쥐',
@@ -103,10 +76,10 @@
         age: '15+',
         ageDesc: '세',
         chart: '#1',
-        chartCategory: '교육',
+        chartCategory: '스포츠',
         developer: 'enjoy studio',
         size: '52.8 MB',
-        compatibility: '이 iPhone에서 사용 가능',
+        compatibility: currentCompatibility,
         language: '한국어와 영어',
         inAppPurchase: '사용 가능',
         version: '1.0',
@@ -150,6 +123,52 @@
             bg: "bg-purple-50",
             mockupColor: "bg-gradient-to-b from-purple-400 to-indigo-500",
             imageUrl: "https://github.com/won429/enjoystorefw/blob/main/music.png?raw=true"
+          }
+        ],
+      },
+      {
+        id: 'enjoy_main',
+        cardHeader: '추억을 떠올리고 싶다면',
+        badge: '출시 예정',
+        updateTag: '대규모 업데이트',
+        bannerTitle: '은랑 LV.999 등장!',
+        bannerSubtitle: '<엔조이> 신규 업데이트 출시.',
+        title: '엔조이',
+        subtitle: '은하 판타지 RPG (소셜)',
+        category: '소셜 네트워킹',
+        rating: '0',
+        ratingCount: '0',
+        age: '15+',
+        ageDesc: '앱 내 제어',
+        chart: '#2',
+        chartCategory: '소셜',
+        developer: 'enjoy Corp.',
+        size: '151.5 MB',
+        compatibility: currentCompatibility,
+        language: '한국어 외 9개',
+        inAppPurchase: '사용 가능',
+        version: '1.260416.0',
+        updatedAt: '2일 전',
+        releaseNotes: '',
+        buttonText: '출시예정',
+        bgClass: "bg-gradient-to-br from-purple-400 via-purple-500 to-indigo-500",
+        overlayClass: "bg-[#6d28d9]", 
+        iconBg: "bg-gradient-to-br from-pink-500 to-rose-600",
+        iconText: "E",
+        screenshots: [
+          {
+            title: "간편 매칭",
+            titleColor: "text-rose-700",
+            desc: "나에게 최적화된 매칭 UI로\n새로운 인연을 찾아보세요.",
+            bg: "bg-rose-50",
+            mockupColor: "bg-gradient-to-b from-rose-400 to-pink-500"
+          },
+          {
+            title: "안전한 대화",
+            titleColor: "text-rose-700",
+            desc: "철저한 인증 시스템으로\n안심하고 대화할 수 있습니다.",
+            bg: "bg-pink-50",
+            mockupColor: "bg-gradient-to-b from-pink-400 to-purple-400"
           }
         ],
       }
