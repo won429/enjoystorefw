@@ -44,28 +44,29 @@
     const APPS = [
       {
         id: 'enjoy_main',
-        cardHeader: '새로운 만남을 원한다면',
-        badge: '지금 이용 가능',
+        cardHeader: '추억을 떠올리고 싶다면',
+        badge: '출시 예정',
         updateTag: '대규모 업데이트',
         bannerTitle: '은랑 LV.999 등장!',
         bannerSubtitle: '<엔조이> 신규 업데이트 출시.',
         title: '엔조이',
         subtitle: '은하 판타지 RPG (소셜)',
         category: '소셜 네트워킹',
-        rating: '4.7',
-        ratingCount: '7.2천',
-        age: '19+',
+        rating: '0',
+        ratingCount: '0',
+        age: '15+',
         ageDesc: '앱 내 제어',
         chart: '#2',
         chartCategory: '소셜',
-        developer: 'ENJOY Corp.',
+        developer: 'enjoy Corp.',
         size: '151.5 MB',
         compatibility: '이 iPhone에서 사용 가능',
         language: '한국어 외 9개',
         inAppPurchase: '사용 가능',
         version: '1.260416.0',
         updatedAt: '2일 전',
-        releaseNotes: '일부 버그를 수정하고 전반적인 경험을 개선했습니다. ENJOY 드림',
+        releaseNotes: '',
+        buttonText: '출시예정',
         bgClass: "bg-gradient-to-br from-purple-400 via-purple-500 to-indigo-500",
         overlayClass: "bg-[#6d28d9]", 
         iconBg: "bg-gradient-to-br from-pink-500 to-rose-600",
@@ -76,20 +77,22 @@
             titleColor: "text-rose-700",
             desc: "나에게 최적화된 매칭 UI로\n새로운 인연을 찾아보세요.",
             bg: "bg-rose-50",
-            mockupColor: "bg-gradient-to-b from-rose-400 to-pink-500"
+            mockupColor: "bg-gradient-to-b from-rose-400 to-pink-500",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/kia.png?raw=true"
           },
           {
             title: "안전한 대화",
             titleColor: "text-rose-700",
             desc: "철저한 인증 시스템으로\n안심하고 대화할 수 있습니다.",
             bg: "bg-pink-50",
-            mockupColor: "bg-gradient-to-b from-pink-400 to-purple-400"
+            mockupColor: "bg-gradient-to-b from-pink-400 to-purple-400",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/samsung.png?raw=true"
           }
         ],
       },
       {
         id: 'enjoy_sports',
-        cardHeader: '힐링하는 시간',
+        cardHeader: '야구팬들은 못참쥐',
         badge: '',
         updateTag: '모두에게 사랑받는 앱',
         bannerTitle: 'Zen Color',
@@ -111,6 +114,7 @@
         version: '1.5.0',
         updatedAt: '1주 전',
         releaseNotes: '학습에 최적화된 UI 구성으로 일부 기능을 개선했습니다.',
+        buttonText: '받기',
         bgClass: "bg-gradient-to-br from-teal-200 via-emerald-300 to-teal-500",
         overlayClass: "bg-[#336b64]", 
         iconBg: "bg-blue-600",
@@ -197,9 +201,9 @@
                     <div class="flex flex-col items-center">
                       <button 
                         onclick="event.stopPropagation(); openApp('${app.id}');"
-                        class="bg-white/20 hover:bg-white/30 backdrop-blur-md w-[64px] py-1.5 rounded-full text-[13px] font-bold transition mb-1"
+                        class="bg-white/20 hover:bg-white/30 backdrop-blur-md w-auto px-4 min-w-[64px] py-1.5 rounded-full text-[13px] font-bold transition mb-1 whitespace-nowrap"
                       >
-                        받기
+                        ${app.buttonText || '받기'}
                       </button>
                       <span class="text-[9px] text-white/60 font-medium">앱 내 구입</span>
                     </div>
@@ -228,8 +232,8 @@
                     <h4 class="font-semibold text-gray-900 text-[14px] mb-0.5">${app.title}</h4>
                     <p class="text-[12px] text-gray-500">${app.category}</p>
                   </div>
-                  <button onclick="event.stopPropagation(); openApp('${app.id}');" class="bg-gray-100 hover:bg-gray-200 text-blue-600 px-4 py-1 rounded-full text-[12px] font-bold transition">
-                    받기
+                  <button onclick="event.stopPropagation(); openApp('${app.id}');" class="bg-gray-100 hover:bg-gray-200 text-blue-600 px-4 py-1 rounded-full text-[12px] font-bold transition whitespace-nowrap">
+                    ${app.buttonText || '받기'}
                   </button>
                 </div>
               </div>
@@ -297,7 +301,7 @@
                   <h4 class="font-semibold text-gray-900 text-[14px]">${app.title}</h4>
                   <p class="text-[12px] text-gray-500">${app.category}</p>
                 </div>
-                <button class="bg-gray-100 text-blue-600 px-4 py-1 rounded-full text-[12px] font-bold">받기</button>
+                <button class="bg-gray-100 text-blue-600 px-4 py-1 rounded-full text-[12px] font-bold whitespace-nowrap">${app.buttonText || '받기'}</button>
               </div>
             </div>
           `).join('') : '<div class="text-center py-10 text-gray-400 text-sm">검색 결과가 없습니다.</div>'}
@@ -350,7 +354,12 @@
       }
 
       // 스크린샷 뷰 생성기
-      const screenshotsHTML = app.screenshots.map(s => `
+      const screenshotsHTML = app.screenshots.map(s => 
+        s.imageUrl ? `
+        <div class="w-[260px] sm:w-[280px] h-[460px] flex-shrink-0 rounded-[32px] relative overflow-hidden shadow-sm border border-black/5">
+          <img src="${s.imageUrl}" class="w-full h-full object-cover" alt="screenshot" />
+        </div>
+        ` : `
         <div class="w-[260px] sm:w-[280px] h-[460px] flex-shrink-0 ${s.bg} rounded-[32px] flex flex-col pt-10 relative overflow-hidden shadow-sm border border-black/5">
           <h3 class="text-[22px] font-black ${s.titleColor} mb-2 text-center">${s.title}</h3>
           <p class="text-[14px] text-[#555] text-center px-6 leading-relaxed font-medium">${s.desc.replace(/\n/g, '<br/>')}</p>
@@ -377,9 +386,6 @@
           <button onclick="window.closeApp()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-800 hover:bg-gray-200 transition">
             <i data-lucide="chevron-left" style="width:20px;height:20px;" stroke-width="2.5"></i>
           </button>
-          <button class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-800 hover:bg-gray-200 transition">
-            <i data-lucide="share" style="width:18px;height:18px;" stroke-width="2"></i>
-          </button>
         </div>
         
         <div class="px-5 flex gap-4 mt-1">
@@ -389,7 +395,7 @@
           <div class="flex-1 flex flex-col justify-center">
             <h1 class="text-[20px] font-bold text-gray-900 leading-tight mb-1">${app.title}</h1>
             <p class="text-[13px] text-gray-500 mb-3">${app.developer}</p>
-            <button class="bg-blue-500 hover:bg-blue-600 text-white w-[68px] py-1.5 rounded-full text-[13px] font-bold transition">받기</button>
+            <button class="bg-blue-500 hover:bg-blue-600 text-white w-auto px-4 min-w-[68px] py-1.5 rounded-full text-[13px] font-bold transition whitespace-nowrap">${app.buttonText || '받기'}</button>
           </div>
         </div>
         
@@ -420,16 +426,17 @@
 
           <div class="flex flex-col items-center flex-shrink-0 w-[110px]">
             <span class="text-[11px] text-gray-400 font-medium mb-1">개발자</span>
-            <div class="w-7 h-7 bg-gray-100 rounded border border-gray-300 flex items-center justify-center text-gray-500 mb-1">
+            <div class="w-7 h-7 bg-gray-100 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 mb-1">
               <i data-lucide="user" style="width:16px;height:16px;" stroke-width="2.5"></i>
             </div>
             <span class="text-[11px] text-gray-400 font-medium whitespace-nowrap overflow-hidden text-ellipsis w-[90%] text-center">${app.developer}</span>
           </div>
         </div>
 
+        ${app.releaseNotes ? `
         <!-- 새로운 소식 -->
         <div class="px-5 pt-5 pb-2">
-           <div class="flex justify-between items-center mb-3 cursor-pointer">
+           <div class="flex justify-between items-center mb-3 cursor-pointer" onclick="window.openVersionHistory()">
              <h3 class="text-[22px] font-bold text-gray-900 flex items-center">
                새로운 소식 <i data-lucide="chevron-right" class="text-gray-400 ml-1" style="width:24px;height:24px;"></i>
              </h3>
@@ -442,6 +449,7 @@
              ${app.releaseNotes.replace(/\n/g, '<br/>')}
            </p>
         </div>
+        ` : ''}
 
         <!-- 스크린샷 뷰 -->
         <div class="flex gap-4 overflow-x-auto px-5 py-5 mt-2" style="-ms-overflow-style: none; scrollbar-width: none;">
@@ -580,6 +588,32 @@
     window.closeApp = function() {
       selectedApp = null;
       renderModal();
+    };
+
+    window.openVersionHistory = function() {
+      if (!selectedApp) return;
+      const detailHTML = `
+        <div id="version-history-modal" class="absolute inset-0 bg-white z-[60] overflow-y-auto animate-slide-up pb-10">
+          <div class="sticky top-0 bg-white/95 backdrop-blur-md z-10 px-4 py-3 flex items-center border-b border-gray-100">
+            <button onclick="event.stopPropagation(); document.getElementById('version-history-modal').remove()" class="flex items-center text-blue-500 font-medium">
+              <i data-lucide="chevron-left" style="width:24px;height:24px;" stroke-width="2.5"></i> 
+              <span class="ml-1 text-[17px]">뒤로</span>
+            </button>
+            <h1 class="absolute left-1/2 transform -translate-x-1/2 text-[17px] font-bold text-gray-900">버전 기록</h1>
+          </div>
+          <div class="px-5 py-6">
+            <div class="flex justify-between items-center mb-3">
+              <span class="text-[16px] font-bold text-gray-900">${selectedApp.version}</span>
+              <span class="text-[14px] text-gray-500 font-medium">${selectedApp.updatedAt}</span>
+            </div>
+            <p class="text-[15px] text-gray-800 leading-relaxed font-medium">
+              ${selectedApp.releaseNotes.replace(/\n/g, '<br/>')}
+            </p>
+          </div>
+        </div>
+      `;
+      document.getElementById('modal-container').insertAdjacentHTML('beforeend', detailHTML);
+      lucide.createIcons();
     };
 
     // --- 초기 렌더링 ---
