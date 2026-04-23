@@ -88,10 +88,11 @@
         shortReleaseNotes: '서비스 오픈!\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!....',
         buttonText: '받기',
         bgClass: "bg-gradient-to-br from-teal-200 via-emerald-300 to-teal-500",
-        overlayClass: "bg-[#336b64]", 
+        overlayClass: "bg-[#182236]", 
         iconBg: "bg-blue-600",
         iconText: "K",
         iconUrl: "https://github.com/won429/enjoystorefw/blob/main/kbo.png?raw=true",
+        bannerUrl: "https://github.com/won429/enjoystorefw/blob/main/yego.png?raw=true",
         screenshots: [
           {
             title: "간편 홈",
@@ -213,10 +214,11 @@
                 onclick="openApp('${app.id}')"
               >
                 <div class="flex-1 relative ${app.bgClass} flex items-center justify-center overflow-hidden">
+                  ${app.bannerUrl ? `<img src="${app.bannerUrl}" class="absolute inset-0 w-full h-full object-cover" />` : ''}
                   ${app.badge ? `<div class="absolute top-0 left-0 bg-[#8b3dff] text-white text-[12px] font-bold px-3 py-1.5 rounded-br-[16px] z-10 shadow-sm">${app.badge}</div>` : ''}
-                  <div class="absolute w-full h-full opacity-20 flex items-center justify-center mix-blend-overlay">
+                  ${!app.bannerUrl ? `<div class="absolute w-full h-full opacity-20 flex items-center justify-center mix-blend-overlay">
                      <div class="text-[180px] font-black italic">${app.iconText}</div>
-                  </div>
+                  </div>` : ''}
                 </div>
                 
                 <div class="${app.overlayClass} flex flex-col text-white pb-4">
@@ -481,51 +483,60 @@
         
         <!-- 수치 영역 -->
         <div class="mt-6 border-y border-gray-100 py-3 flex overflow-x-auto px-2" style="-ms-overflow-style: none; scrollbar-width: none;">
-          <div class="flex flex-col items-center flex-shrink-0 w-[110px]">
-            <span class="text-[11px] text-gray-400 font-medium mb-1">${app.ratingCount}개의 평가</span>
-            <span class="text-[24px] font-black text-gray-700 leading-none mb-1.5">${app.rating}</span>
+          <div class="flex flex-col items-center flex-shrink-0 w-[96px]">
+            <span class="text-[10px] text-gray-400 font-medium mb-1">${app.ratingCount}개의 평가</span>
+            <span class="text-[20px] font-extrabold text-gray-700 leading-none mb-1.5">${app.rating}</span>
             <div class="flex text-gray-400 gap-[1px]">
                ${starsHTML}
             </div>
           </div>
-          <div class="w-px h-10 bg-gray-200 flex-shrink-0 self-center"></div>
+          <div class="w-px h-8 bg-gray-200 flex-shrink-0 self-center"></div>
           
-          <div class="flex flex-col items-center flex-shrink-0 w-[100px]">
-            <span class="text-[11px] text-gray-400 font-medium mb-1">연령</span>
-            <span class="text-[24px] font-black text-gray-700 leading-none mb-1.5">${app.age}</span>
-            <span class="text-[11px] text-gray-400 font-medium">${app.ageDesc}</span>
+          <div class="flex flex-col items-center flex-shrink-0 w-[86px]">
+            <span class="text-[10px] text-gray-400 font-medium mb-1">연령</span>
+            <span class="text-[20px] font-extrabold text-gray-700 leading-none mb-1.5">${app.age}</span>
+            <span class="text-[10px] text-gray-400 font-medium">${app.ageDesc}</span>
           </div>
-          <div class="w-px h-10 bg-gray-200 flex-shrink-0 self-center"></div>
+          <div class="w-px h-8 bg-gray-200 flex-shrink-0 self-center"></div>
           
-          <div class="flex flex-col items-center flex-shrink-0 w-[100px]">
-            <span class="text-[11px] text-gray-400 font-medium mb-1">차트</span>
-            <span class="text-[24px] font-black text-gray-700 leading-none mb-1.5">${app.chart}</span>
-            <span class="text-[11px] text-gray-400 font-medium">${app.chartCategory}</span>
-          </div>
-          <div class="w-px h-10 bg-gray-200 flex-shrink-0 self-center"></div>
-
-          <div class="flex flex-col items-center flex-shrink-0 w-[110px]">
-            <span class="text-[11px] text-gray-400 font-medium mb-1">개발자</span>
-            <div class="w-7 h-7 bg-gray-100 rounded-full border border-gray-300 flex items-center justify-center text-gray-500 mb-1">
-              <i data-lucide="user" style="width:16px;height:16px;" stroke-width="2.5"></i>
+          <div class="flex flex-col items-center flex-shrink-0 w-[86px]">
+            <span class="text-[10px] text-gray-400 font-medium mb-1">카테고리</span>
+            <div class="h-[20px] mb-1.5 flex items-center justify-center text-gray-700">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M12 4v16"></path><circle cx="12" cy="12" r="3"></circle><path d="M2 10h4v4H2"></path><path d="M22 10h-4v4h4"></path></svg>
             </div>
-            <span class="text-[11px] text-gray-400 font-medium whitespace-nowrap overflow-hidden text-ellipsis w-[90%] text-center">${app.developer}</span>
+            <span class="text-[10px] text-gray-400 font-medium">${app.category}</span>
+          </div>
+          <div class="w-px h-8 bg-gray-200 flex-shrink-0 self-center"></div>
+
+          <div class="flex flex-col items-center flex-shrink-0 w-[96px]">
+            <span class="text-[10px] text-gray-400 font-medium mb-1">개발자</span>
+            <div class="h-[24px] mb-1 flex items-center justify-center text-gray-400">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="6"></rect><circle cx="12" cy="10" r="3.5"></circle><path d="M6 22v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path></svg>
+            </div>
+            <span class="text-[10px] text-gray-400 font-medium whitespace-nowrap overflow-hidden text-ellipsis w-[90%] text-center">${app.developer}</span>
+          </div>
+          <div class="w-px h-8 bg-gray-200 flex-shrink-0 self-center"></div>
+
+          <div class="flex flex-col items-center flex-shrink-0 w-[86px]">
+            <span class="text-[10px] text-gray-400 font-medium mb-1">언어</span>
+            <span class="text-[20px] font-extrabold text-gray-700 leading-none mb-1.5">KO</span>
+            <span class="text-[10px] text-gray-400 font-medium">+ 1개 언어</span>
           </div>
         </div>
 
         ${app.releaseNotes ? `
         <!-- 새로운 소식 -->
         <div class="px-5 pt-5 pb-2">
-           <div class="flex justify-between items-center mb-3 cursor-pointer" onclick="window.openVersionHistory()">
-             <h3 class="text-[22px] font-bold text-gray-900 flex items-center">
-               새로운 소식 <i data-lucide="chevron-right" class="text-gray-400 ml-1" style="width:24px;height:24px;"></i>
+           <div class="flex justify-between items-center mb-2 cursor-pointer" onclick="window.openVersionHistory()">
+             <h3 class="text-[20px] font-bold text-gray-900 flex items-center">
+               새로운 소식 <i data-lucide="chevron-right" class="text-gray-400 ml-1" style="width:20px;height:20px;"></i>
              </h3>
            </div>
-           <div class="flex justify-between items-center mb-3">
-             <span class="text-[14px] text-gray-500 font-medium">버전 ${app.version}</span>
-             <span class="text-[14px] text-gray-500 font-medium">${app.updatedAt}</span>
+           <div class="flex justify-between items-center mb-2">
+             <span class="text-[13px] text-gray-500 font-medium">버전 ${app.version}</span>
+             <span class="text-[13px] text-gray-500 font-medium">${app.updatedAt}</span>
            </div>
-           <p class="text-[15px] text-gray-800 leading-relaxed font-medium">
+           <p class="text-[14px] text-gray-800 leading-relaxed font-medium">
              ${(app.shortReleaseNotes || app.releaseNotes).replace(/\n/g, '<br/>')}
            </p>
         </div>
