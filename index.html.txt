@@ -1,0 +1,898 @@
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>엔조이 앱스토어</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* 스크롤바 감추기 */
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .animate-slide-up { animation: slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-center font-sans overflow-hidden">
+  
+  <!-- 전체 컨테이너 -->
+  <div class="w-full h-[100dvh] max-w-[400px] mx-auto bg-white relative overflow-hidden flex flex-col sm:shadow-2xl sm:border-x border-gray-100">
+    
+    <!-- 메인 컨텐츠 영역 -->
+    <main id="main-content" class="flex-1 overflow-y-auto scrollbar-hide bg-white" style="-ms-overflow-style: none; scrollbar-width: none;"></main>
+
+    <!-- 하단 네비게이션 바 -->
+    <div class="absolute bottom-6 left-0 w-full px-4 flex justify-center z-30 pointer-events-none pb-[env(safe-area-inset-bottom)]">
+      <nav id="bottom-nav" class="pointer-events-auto w-full max-w-[320px] h-[62px] rounded-full flex justify-between items-center px-1.5 shadow-[0_15px_35px_rgba(0,0,0,0.12),inset_0_1px_2px_rgba(255,255,255,0.8)] border border-gray-200/50 bg-white/70 backdrop-blur-2xl">
+      </nav>
+    </div>
+
+    <!-- 앱 상세 화면 모달 -->
+    <div id="modal-container" class="absolute inset-0 bg-white z-50 overflow-y-auto scrollbar-hide animate-slide-up pb-10 hidden block">
+    </div>
+
+  </div>
+
+  <script>
+    // --- 기기 판별 로직 ---
+    function getDeviceCompatibility() {
+      const ua = navigator.userAgent;
+      let device = 'iPhone'; // 기본값
+      if (/iPad/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
+        device = 'iPad';
+      } else if (/iPhone/i.test(ua)) {
+        device = 'iPhone';
+      } else if (/Mac/i.test(ua)) {
+        device = 'Mac';
+      } else if (/SM-|SAMSUNG|Galaxy/i.test(ua) || /Android/i.test(ua)) {
+        device = 'Galaxy';
+      } else if (/Windows/i.test(ua)) {
+        device = 'Windows';
+      }
+      return '이 ' + device + '에서 사용 가능';
+    }
+    const currentCompatibility = getDeviceCompatibility();
+
+    // --- 앱 데이터 ---
+    const APPS = [
+      {
+        id: 'enjoy_sports',
+        cardHeader: '야구팬들은 못참쥐',
+        badge: '',
+        updateTag: '전시기에게 사랑받는 앱',
+        bannerTitle: 'KIA vs 삼성',
+        bannerSubtitle: '2026년 5월 15일~17일 대구라팍',
+        title: 'KBO (엔조이스포츠)',
+        subtitle: '프로야구 실시간 중계 및 기록 (스포츠)',
+        category: '스포츠',
+        rating: '0',
+        ratingCount: '0',
+        age: '15+',
+        ageDesc: '세',
+        chart: '#1',
+        chartCategory: '스포츠',
+        developer: 'enjoy studio',
+        size: '52.8 MB',
+        compatibility: currentCompatibility,
+        language: '한국어와 영어',
+        inAppPurchase: '사용 가능',
+        version: '1.0',
+        updatedAt: '3월 31일',
+        releaseNotes: '서비스 오픈!\\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!\\n우리팀은 몇등이었더라? 순위도 확인해보실 수 있습니다.',
+        shortReleaseNotes: '서비스 오픈!\\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!....',
+        buttonText: '받기',
+        cardBorderClass: '',
+        bgClass: "bg-gradient-to-br from-teal-200 via-emerald-300 to-teal-500",
+        overlayClass: "bg-[#182236]", 
+        iconBg: "bg-blue-600",
+        iconText: "K",
+        iconUrl: "https://github.com/won429/enjoystorefw/blob/main/kbo.png?raw=true",
+        bannerUrl: "https://github.com/won429/enjoystorefw/blob/main/yego.png?raw=true",
+        screenshots: [
+          {
+            title: "간편 홈",
+            titleColor: "text-indigo-800",
+            desc: "시청에 최적화된 UI 구성으로\\n최근 시청한 경기 이어보기 등의\\n기능을 제공합니다.",
+            bg: "bg-[#eaf5f4]", 
+            mockupColor: "bg-blue-600",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/kia.png?raw=true"
+          },
+          {
+            title: "UI 업데이트",
+            titleColor: "text-indigo-800",
+            desc: "중계만 시청할 수 있도록\\n야구 데이터 위주로\\n새롭게 개편했습니다.",
+            bg: "bg-[#eef2f6]",
+            mockupColor: "bg-[#1f2940]",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/samsung.png?raw=true"
+          },
+          {
+            title: "모든 기능",
+            titleColor: "text-rose-700",
+            desc: "다양한 기능들을\\n지금 바로 경험해보세요.",
+            bg: "bg-purple-50",
+            mockupColor: "bg-gradient-to-b from-purple-400 to-indigo-500",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/all.png?raw=true"
+          },
+          {
+            title: "응원가",
+            titleColor: "text-rose-700",
+            desc: "응원가와 함께\\n경기를 즐겨보세요.",
+            bg: "bg-purple-50",
+            mockupColor: "bg-gradient-to-b from-purple-400 to-indigo-500",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/music.png?raw=true"
+          }
+        ],
+      },
+      {
+        id: 'enjoy_main',
+        cardHeader: '추억을 떠올리고 싶다면',
+        badge: '출시 예정',
+        updateTag: '2026년 출시 예정',
+        bannerTitle: '마침내 어플 등장!',
+        bannerSubtitle: '연내 출시를 응원해주세요.',
+        title: '엔조이',
+        subtitle: '엔조이 종합 엔터테인먼트 소셜 네트워크',
+        category: '소셜 네트워킹',
+        rating: '0',
+        ratingCount: '0',
+        age: '15+',
+        ageDesc: '앱 내 제어',
+        chart: '#2',
+        chartCategory: '소셜',
+        developer: 'enjoy Corp.',
+        size: '151.5 MB',
+        compatibility: currentCompatibility,
+        language: '한국어 외 9개',
+        inAppPurchase: '사용 가능',
+        version: '1.260416.0',
+        updatedAt: '2일 전',
+        releaseNotes: '',
+        buttonText: '출시예정',
+        cardBorderClass: 'border-8 border-[#8b3dff]',
+        bgClass: "bg-gradient-to-br from-purple-400 via-purple-500 to-indigo-500",
+        overlayClass: "bg-[#8b3dff]", 
+        iconBg: "bg-gradient-to-br from-pink-500 to-rose-600",
+        iconText: "E",
+        iconUrl: "https://github.com/won429/enjoystorefw/blob/main/en.png?raw=true",
+        bannerUrl: "https://github.com/won429/enjoystorefw/blob/main/sdf.png?raw=true",
+        releaseDateInfo: "2026년 중 출시 예정",
+        screenshots: [
+          {
+            title: "간편 매칭",
+            titleColor: "text-rose-700",
+            desc: "나에게 최적화된 매칭 UI로\\n새로운 인연을 찾아보세요.",
+            bg: "bg-rose-50",
+            mockupColor: "bg-gradient-to-b from-rose-400 to-pink-500",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/enjoymain.png?raw=true"
+          },
+          {
+            title: "안전한 대화",
+            titleColor: "text-rose-700",
+            desc: "철저한 인증 시스템으로\\n안심하고 대화할 수 있습니다.",
+            bg: "bg-pink-50",
+            mockupColor: "bg-gradient-to-b from-pink-400 to-purple-400",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/moim.png?raw=true"
+          },
+          {
+            title: "다양한 콘텐츠",
+            titleColor: "text-purple-800",
+            desc: "더욱 풍성해진 즐길거리와\\n새로운 기능을 만나보세요.",
+            bg: "bg-purple-50",
+            mockupColor: "bg-gradient-to-b from-purple-500 to-indigo-500",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/the.png?raw=true"
+          },
+          {
+            title: "주변 탐색",
+            titleColor: "text-indigo-800",
+            desc: "지도에서 내 주변의\\n다양한 정보를 확인해보세요.",
+            bg: "bg-indigo-50",
+            mockupColor: "bg-gradient-to-b from-indigo-400 to-purple-500",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/map.png?raw=true"
+          },
+          {
+            title: "편의 기능",
+            titleColor: "text-blue-800",
+            desc: "다양한 편의 기능으로\\n더욱 편리한 일상을 즐겨보세요.",
+            bg: "bg-blue-50",
+            mockupColor: "bg-gradient-to-b from-blue-400 to-indigo-500",
+            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/jiha.png?raw=true"
+          }
+        ],
+      }
+    ];
+
+    // --- 상태 관리 ---
+    let activeTab = '투데이';
+    let searchQuery = '';
+    let selectedApp = null;
+
+    // --- 렌더링 함수 ---
+    function renderAll() {
+      renderMain();
+      renderNav();
+      lucide.createIcons();
+    }
+
+    function renderMain() {
+      const mainEl = document.getElementById('main-content');
+      if (activeTab === '투데이') {
+        mainEl.innerHTML = getTodayHTML();
+      } else if (activeTab === '앱') {
+        mainEl.innerHTML = getAppsHTML('인기 앱');
+      } else if (activeTab === '검색') {
+        mainEl.innerHTML = getSearchHTML();
+      }
+    }
+
+    // --- HTML 생성기 ---
+    function getTodayHTML() {
+      return `
+        <section class="px-4 pb-32 pt-12 sm:pt-6 flex flex-col gap-8">
+          <div class="px-2 -mb-6">
+            <h1 class="text-[32px] font-extrabold tracking-tight text-gray-900">투데이</h1>
+          </div>
+          ${APPS.map(app => `
+            <div class="flex flex-col gap-3">
+              <h2 class="text-[22px] font-bold text-gray-900 px-1 tracking-tight">${app.cardHeader}</h2>
+              <div 
+                class="w-full h-[420px] rounded-[24px] overflow-hidden flex flex-col shadow-[0_8px_20px_rgba(0,0,0,0.1)] ${app.cardBorderClass} ${app.overlayClass} cursor-pointer transform active:scale-95 transition-transform flex-shrink-0 relative"
+                onclick="openApp('${app.id}')"
+              >
+                <div class="flex-1 relative ${app.bgClass} flex items-center justify-center overflow-hidden">
+                  ${app.bannerUrl ? `<img src="${app.bannerUrl}" class="absolute inset-0 w-full h-full object-cover" />` : ''}
+                  ${app.badge ? `<div class="absolute top-0 left-0 bg-[#8b3dff] text-white text-[12px] font-bold px-3 py-1.5 rounded-br-[16px] z-10 shadow-sm">${app.badge}</div>` : ''}
+                  ${!app.bannerUrl ? `<div class="absolute w-full h-full opacity-20 flex items-center justify-center mix-blend-overlay">
+                     <div class="text-[180px] font-black italic">${app.iconText}</div>
+                  </div>` : ''}
+                </div>
+                
+                <div class="${app.overlayClass} flex flex-col text-white pb-4">
+                  <div class="px-4 pt-4 pb-3">
+                    <div class="text-[11px] text-white/90 font-bold mb-0.5">${app.updateTag}</div>
+                    <h2 class="text-[24px] font-extrabold mb-0.5 tracking-tight leading-tight">${app.bannerTitle}</h2>
+                    <p class="text-[12px] text-white/80">${app.bannerSubtitle}</p>
+                  </div>
+                  <div class="flex items-center justify-between px-4">
+                    <div class="flex items-center gap-3">
+                      <div class="w-12 h-12 ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-[20px] font-bold shadow-sm overflow-hidden">
+                        ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover" />` : app.iconText}
+                      </div>
+                      <div class="flex flex-col">
+                        <span class="text-[13px] font-bold mb-0.5">${app.title}</span>
+                        <span class="text-[11px] text-white/70">${app.subtitle}</span>
+                      </div>
+                    </div>
+                    <div class="flex flex-col items-center">
+                      ${app.isDownloading ? 
+                        `<div class="w-auto min-w-[60px] h-[32px] mb-1 flex items-center justify-center text-white cursor-default" onclick="event.stopPropagation();">
+                           <svg class="w-[28px] h-[28px]" viewBox="0 0 36 36">
+                             <circle cx="18" cy="18" r="14" fill="none" class="stroke-current opacity-30" stroke-width="2.5"></circle>
+                             <circle cx="18" cy="18" r="14" fill="none" class="stroke-current progress-circle-${app.id}" style="transition: stroke-dashoffset 0.1s linear;" stroke-width="2.5" stroke-dasharray="88" stroke-dashoffset="${88 - (88 * (app.progress || 0) / 100)}" stroke-linecap="round" transform="rotate(-90 18 18)"></circle>
+                             <rect x="13.5" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                             <rect x="20" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                           </svg>
+                         </div>` :
+                        `<button 
+                          onclick="if('${app.buttonText}' !== '완료' && '${app.buttonText}' !== '출시예정') { window.handleDownload(event, '${app.id}'); } else { event.stopPropagation(); }"
+                          class="${app.buttonText === '완료' ? 'bg-white/10 text-white/50 cursor-default' : (app.buttonText === '출시예정' ? 'bg-white/20 cursor-default' : 'bg-white/20 hover:bg-white/30')} backdrop-blur-md w-auto px-3.5 min-w-[60px] py-1.5 rounded-full text-[13px] font-bold transition mb-1 whitespace-nowrap"
+                          ${(app.buttonText === '완료' || app.buttonText === '출시예정') ? 'disabled' : ''}
+                        >
+                          ${app.buttonText || '받기'}
+                        </button>`
+                      }
+                      <span class="text-[9px] text-white/60 font-medium">앱 내 구입</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `).join('')}
+        </section>
+      `;
+    }
+
+    function getAppsHTML(title) {
+      return `
+        <section class="px-5 pb-32 pt-12 sm:pt-8">
+          <h2 class="text-[24px] font-extrabold text-gray-900 mb-5">${title} 차트</h2>
+          <div class="flex flex-col gap-4">
+            ${APPS.map((app, index) => `
+              <div class="flex items-center gap-3 cursor-pointer group" onclick="openApp('${app.id}')">
+                <div class="w-4 text-center font-bold text-gray-900 text-[15px]">${index + 1}</div>
+                <div class="w-[52px] h-[52px] flex-shrink-0 ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-xl font-black shadow-sm group-hover:scale-105 transition-transform overflow-hidden">
+                  ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover" />` : app.iconText}
+                </div>
+                <div class="flex-1 border-b border-gray-100 pb-4 flex justify-between items-center">
+                  <div>
+                    <h4 class="font-semibold text-gray-900 text-[14px] mb-0.5">${app.title}</h4>
+                    <p class="text-[12px] text-gray-500">${app.category}</p>
+                  </div>
+                  ${app.isDownloading ?
+                    `<div class="w-[60px] h-[28px] flex items-center justify-center text-blue-600 cursor-default" onclick="event.stopPropagation();">
+                       <svg class="w-[28px] h-[28px]" viewBox="0 0 36 36">
+                         <circle cx="18" cy="18" r="14" fill="none" class="stroke-current opacity-20" stroke-width="2.5"></circle>
+                         <circle cx="18" cy="18" r="14" fill="none" class="stroke-current progress-circle-${app.id}" style="transition: stroke-dashoffset 0.1s linear;" stroke-width="2.5" stroke-dasharray="88" stroke-dashoffset="${88 - (88 * (app.progress || 0) / 100)}" stroke-linecap="round" transform="rotate(-90 18 18)"></circle>
+                         <rect x="13.5" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                         <rect x="20" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                       </svg>
+                     </div>` :
+                    `<button onclick="if('${app.buttonText}' !== '완료' && '${app.buttonText}' !== '출시예정') { window.handleDownload(event, '${app.id}'); } else { event.stopPropagation(); }" class="${app.buttonText === '완료' ? 'bg-gray-200 text-gray-400 cursor-default' : (app.buttonText === '출시예정' ? 'bg-gray-100 text-blue-400 cursor-default' : 'bg-gray-100 hover:bg-gray-200 text-blue-600')} px-3.5 py-1.5 rounded-full text-[12px] font-bold transition whitespace-nowrap" ${(app.buttonText === '완료' || app.buttonText === '출시예정') ? 'disabled' : ''}>
+                      ${app.buttonText || '받기'}
+                    </button>`
+                  }
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </section>
+      `;
+    }
+
+    function getSearchHTML() {
+      return `
+        <section class="px-5 pt-12 sm:pt-8 pb-32">
+          <h2 class="text-[24px] font-extrabold text-gray-900 mb-3">검색</h2>
+          <div class="relative mb-5">
+            <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-gray-400">
+              <i data-lucide="search" style="width:16px;height:16px;"></i>
+            </div>
+            <input 
+              id="search-input"
+              type="text" 
+              placeholder="게임, 앱, 스토리 등" 
+              value="${searchQuery}"
+              oninput="window.handleSearch(this.value)"
+              class="w-full bg-gray-100 text-gray-900 text-[14px] rounded-full py-2 pl-9 pr-9 outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+            />
+            <button id="search-clear-btn" onclick="window.clearSearch()" class="absolute inset-y-0 right-3 flex items-center text-gray-400 ${searchQuery ? '' : 'hidden'}">
+              <i data-lucide="x" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+          <div id="search-results-container">
+            ${getSearchResultsHTML()}
+          </div>
+        </section>
+      `;
+    }
+
+    function getSearchResultsHTML() {
+      if (searchQuery === '') {
+        return `
+          <div>
+            <h3 class="text-[16px] font-bold text-gray-900 mb-3">추천 검색어</h3>
+            <div class="flex flex-wrap gap-2">
+              ${["엔조이", "KBO", "야구", "소개팅"].map(term => `
+                <button onclick="window.setSearchQuery('${term}')" class="bg-white border border-gray-200 text-blue-500 px-3 py-1.5 rounded-full text-[13px] hover:bg-gray-50 transition-colors flex items-center gap-1.5">
+                  <i data-lucide="search" style="width:12px;height:12px;"></i>${term}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      const filtered = APPS.filter(app => 
+        app.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        app.category.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
+      return `
+        <div class="flex flex-col gap-4">
+          ${filtered.length > 0 ? filtered.map(app => `
+            <div class="flex items-center gap-3 cursor-pointer" onclick="openApp('${app.id}')">
+              <div class="w-[52px] h-[52px] ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-xl font-black shadow-sm overflow-hidden">
+                ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover" />` : app.iconText}
+              </div>
+              <div class="flex-1 flex justify-between items-center border-b border-gray-100 pb-3">
+                <div>
+                  <h4 class="font-semibold text-gray-900 text-[14px]">${app.title}</h4>
+                  <p class="text-[12px] text-gray-500">${app.category}</p>
+                </div>
+                ${app.isDownloading ?
+                  `<div class="w-[60px] h-[28px] flex items-center justify-center text-blue-600 cursor-default" onclick="event.stopPropagation();">
+                     <svg class="w-[28px] h-[28px]" viewBox="0 0 36 36">
+                       <circle cx="18" cy="18" r="14" fill="none" class="stroke-current opacity-20" stroke-width="2.5"></circle>
+                       <circle cx="18" cy="18" r="14" fill="none" class="stroke-current progress-circle-${app.id}" style="transition: stroke-dashoffset 0.1s linear;" stroke-width="2.5" stroke-dasharray="88" stroke-dashoffset="${88 - (88 * (app.progress || 0) / 100)}" stroke-linecap="round" transform="rotate(-90 18 18)"></circle>
+                       <rect x="13.5" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                       <rect x="20" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                     </svg>
+                   </div>` :
+                  `<button onclick="if('${app.buttonText}' !== '완료' && '${app.buttonText}' !== '출시예정') { window.handleDownload(event, '${app.id}'); } else { event.stopPropagation(); }" class="${app.buttonText === '완료' ? 'bg-gray-200 text-gray-400 cursor-default' : (app.buttonText === '출시예정' ? 'bg-gray-100 text-blue-400 cursor-default' : 'bg-gray-100 text-blue-600')} px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap" ${(app.buttonText === '완료' || app.buttonText === '출시예정') ? 'disabled' : ''}>${app.buttonText || '받기'}</button>`
+                }
+              </div>
+            </div>
+          `).join('') : '<div class="text-center py-10 text-gray-400 text-sm">검색 결과가 없습니다.</div>'}
+        </div>
+      `;
+    }
+
+    function renderNav() {
+      const navEl = document.getElementById('bottom-nav');
+      
+      const icons = {
+        '투데이': (active) => `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="3" width="16" height="18" rx="4"></rect>
+            <path d="M4 8.5h16"></path>
+            <rect x="7" y="12.5" width="10" height="5.5" rx="1.5" fill="currentColor" stroke="none"></rect>
+          </svg>`,
+        '앱': (active) => `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round">
+            <polygon points="12 4 4 8 12 12 20 8 12 4" ${active ? 'fill="currentColor"' : ''}></polygon>
+            <polyline points="4 12.5 12 16.5 20 12.5" stroke-linecap="round"></polyline>
+            <polyline points="4 17 12 21 20 17" stroke-linecap="round"></polyline>
+          </svg>`,
+        '검색': (active) => `
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10.5" cy="10.5" r="6.5"></circle>
+            <line x1="15.5" y1="15.5" x2="21" y2="21"></line>
+          </svg>`
+      };
+
+      navEl.innerHTML = ['투데이', '앱', '검색'].map(tab => {
+        const active = activeTab === tab;
+        return `
+          <div class="relative flex-1 h-full flex justify-center items-center">
+            ${active ? `
+              <div class="absolute top-[4px] bottom-[4px] left-0 right-0 bg-[#f2f2f2] shadow-[0_2px_10px_rgba(0,0,0,0.06),inset_0_1px_1px_rgba(255,255,255,1)] border border-gray-200/40 rounded-full z-0 animate-in fade-in zoom-in duration-200"></div>
+            ` : ''}
+            <button 
+              onclick="window.setTab('${tab}')"
+              class="relative flex flex-col items-center justify-center gap-[2px] w-full h-full z-10 ${active ? 'text-[#1C68F2]' : 'text-[#444]'}"
+            >
+              <div class="transition-all duration-300 ${active ? 'scale-105' : 'scale-100'} mt-0.5">
+                ${icons[tab](active)}
+              </div>
+              <span class="text-[10px] font-bold tracking-tight">${tab}</span>
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderModal() {
+      const container = document.getElementById('modal-container');
+      if (!selectedApp) {
+        container.classList.add('hidden');
+        container.innerHTML = '';
+        return;
+      }
+
+      const app = selectedApp;
+      
+      // 별점 생성기
+      let starsHTML = '';
+      for(let i=1; i<=5; i++) {
+        starsHTML += `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="${i <= Math.floor(app.rating) ? 'text-gray-400' : 'text-gray-200'}"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>`;
+      }
+
+      // 스크린샷 뷰 생성기
+      const screenshotsHTML = app.screenshots.map(s => 
+        s.imageUrl ? `
+        <div class="w-[260px] sm:w-[280px] h-[460px] flex-shrink-0 rounded-[32px] relative overflow-hidden shadow-sm border border-black/5">
+          <img src="${s.imageUrl}" class="w-full h-full object-cover" alt="screenshot" />
+        </div>
+        ` : `
+        <div class="w-[260px] sm:w-[280px] h-[460px] flex-shrink-0 ${s.bg} rounded-[32px] flex flex-col pt-10 relative overflow-hidden shadow-sm border border-black/5">
+          <h3 class="text-[22px] font-black ${s.titleColor} mb-2 text-center">${s.title}</h3>
+          <p class="text-[14px] text-[#555] text-center px-6 leading-relaxed font-medium">${s.desc.replace(/\\n/g, '<br/>')}</p>
+          
+          <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-[220px] h-[340px] bg-white rounded-t-[32px] shadow-[0_-5px_20px_rgba(0,0,0,0.06)] border-[6px] border-white overflow-hidden flex flex-col">
+            <div class="w-full h-[40px] bg-white flex justify-center items-center relative border-b border-gray-100/80">
+              <div class="w-16 h-4 bg-gray-100 rounded-full"></div>
+            </div>
+            <div class="flex-1 ${s.mockupColor} p-3 flex flex-col gap-2">
+              <div class="w-full h-24 bg-white/20 rounded-2xl"></div>
+              <div class="w-full h-12 bg-white/20 rounded-xl"></div>
+              <div class="w-full h-12 bg-white/20 rounded-xl"></div>
+              <div class="w-full flex gap-2">
+                <div class="flex-1 h-20 bg-white/20 rounded-xl"></div>
+                <div class="flex-1 h-20 bg-white/20 rounded-xl"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      container.innerHTML = `
+        <div class="sticky top-0 bg-white/95 backdrop-blur-md z-10 px-4 py-3 flex justify-between items-center">
+          <button onclick="window.closeApp()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-800 hover:bg-gray-200 transition">
+            <i data-lucide="chevron-left" style="width:20px;height:20px;" stroke-width="2.5"></i>
+          </button>
+        </div>
+        
+        <div class="px-5 flex gap-8 mt-1">
+          <div class="w-[118px] h-[118px] flex-shrink-0 ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-4xl font-black shadow-md overflow-hidden">
+            ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover" />` : app.iconText}
+          </div>
+          <div class="flex-1 flex flex-col justify-between py-1">
+            <div class="flex flex-col">
+              <h1 class="text-[20px] font-bold text-gray-900 leading-tight mb-0.5">${app.title}</h1>
+              <p class="text-[14px] text-gray-500 font-medium">${app.developer}</p>
+            </div>
+            <div class="mt-auto">
+              ${app.isDownloading ?
+                `<div class="w-[72px] h-[32px] flex items-center justify-center text-blue-500 cursor-default" onclick="event.stopPropagation();">
+                   <svg class="w-[28px] h-[28px]" viewBox="0 0 36 36">
+                     <circle cx="18" cy="18" r="14" fill="none" class="stroke-current opacity-20" stroke-width="2.5"></circle>
+                     <circle cx="18" cy="18" r="14" fill="none" class="stroke-current progress-circle-${app.id}" style="transition: stroke-dashoffset 0.1s linear;" stroke-width="2.5" stroke-dasharray="88" stroke-dashoffset="${88 - (88 * (app.progress || 0) / 100)}" stroke-linecap="round" transform="rotate(-90 18 18)"></circle>
+                     <rect x="13.5" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                     <rect x="20" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
+                   </svg>
+                 </div>` :
+                `<button onclick="if('${app.buttonText}' !== '완료' && '${app.buttonText}' !== '출시예정') { window.handleDownload(event, '${app.id}'); }" class="${app.buttonText === '완료' ? 'bg-gray-200 text-gray-400 cursor-default' : (app.buttonText === '출시예정' ? 'bg-blue-400 text-white cursor-default' : 'bg-blue-500 hover:bg-blue-600 text-white')} w-[68px] py-1.5 rounded-full text-[14px] font-bold transition flex items-center justify-center" ${(app.buttonText === '완료' || app.buttonText === '출시예정') ? 'disabled' : ''}>${app.buttonText || '받기'}</button>`
+              }
+            </div>
+          </div>
+        </div>
+
+        ${app.releaseDateInfo ? `
+        <div class="px-5 mt-4 flex flex-col gap-0.5">
+          <span class="text-[13px] font-bold text-blue-500">출시 예정</span>
+          <span class="text-[13px] font-medium text-gray-500">${app.releaseDateInfo}</span>
+        </div>
+        ` : ''}
+        
+        <!-- 수치 영역 -->
+        <div class="mt-6 border-y border-gray-100 py-3 flex overflow-x-auto px-2" style="-ms-overflow-style: none; scrollbar-width: none;">
+          <div class="flex flex-col items-center flex-shrink-0 w-[96px]">
+            <span class="text-[10px] text-gray-400 font-medium mb-1">${app.ratingCount}개의 평가</span>
+            <span class="text-[20px] font-extrabold text-gray-700 leading-none mb-1.5">${app.rating}</span>
+            <div class="flex text-gray-400 gap-[1px]">
+               ${starsHTML}
+            </div>
+          </div>
+          <div class="w-px h-8 bg-gray-200 flex-shrink-0 self-center"></div>
+          
+          <div class="flex flex-col items-center flex-shrink-0 w-[86px]">
+            <span class="text-[10px] text-gray-400 font-medium mb-1">연령</span>
+            <span class="text-[20px] font-extrabold text-gray-700 leading-none mb-1.5">${app.age}</span>
+            <span class="text-[10px] text-gray-400 font-medium">${app.ageDesc}</span>
+          </div>
+          <div class="w-px h-8 bg-gray-200 flex-shrink-0 self-center"></div>
+          
+          <div class="flex flex-col items-center flex-shrink-0 w-[86px]">
+            <span class="text-[10px] text-gray-400 font-medium mb-1">카테고리</span>
+            <div class="h-[20px] mb-1.5 flex items-center justify-center text-gray-700">
+              ${app.category === '스포츠' ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M12 4v16"></path><circle cx="12" cy="12" r="3"></circle><path d="M2 10h4v4H2"></path><path d="M22 10h-4v4h4"></path></svg>' : '<i data-lucide="users" style="width:22px;height:22px;" stroke-width="1.5"></i>'}
+            </div>
+            <span class="text-[10px] text-gray-400 font-medium">${app.category}</span>
+          </div>
+          <div class="w-px h-8 bg-gray-200 flex-shrink-0 self-center"></div>
+
+          <div class="flex flex-col items-center flex-shrink-0 w-[96px]">
+            <span class="text-[10px] text-gray-400 font-medium mb-1">개발자</span>
+            <div class="h-[24px] mb-1 flex items-center justify-center text-gray-400">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="6"></rect><circle cx="12" cy="10" r="3.5"></circle><path d="M6 22v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path></svg>
+            </div>
+            <span class="text-[10px] text-gray-400 font-medium whitespace-nowrap overflow-hidden text-ellipsis w-[90%] text-center">${app.developer}</span>
+          </div>
+          <div class="w-px h-8 bg-gray-200 flex-shrink-0 self-center"></div>
+
+          <div class="flex flex-col items-center flex-shrink-0 w-[86px]">
+            <span class="text-[10px] text-gray-400 font-medium mb-1">언어</span>
+            <span class="text-[20px] font-extrabold text-gray-700 leading-none mb-1.5">KO</span>
+            <span class="text-[10px] text-gray-400 font-medium">+ 1개 언어</span>
+          </div>
+        </div>
+
+        ${app.releaseNotes ? `
+        <!-- 새로운 소식 -->
+        <div class="px-5 pt-5 pb-2">
+           <div class="flex justify-between items-center mb-2 cursor-pointer" onclick="window.openVersionHistory()">
+             <h3 class="text-[20px] font-bold text-gray-900 flex items-center">
+               새로운 소식 <i data-lucide="chevron-right" class="text-gray-400 ml-1" style="width:20px;height:20px;"></i>
+             </h3>
+           </div>
+           <div class="flex justify-between items-center mb-2">
+             <span class="text-[13px] text-gray-500 font-medium">버전 ${app.version}</span>
+             <span class="text-[13px] text-gray-500 font-medium">${app.updatedAt}</span>
+           </div>
+           <p class="text-[14px] text-gray-800 leading-relaxed font-medium">
+             ${(app.shortReleaseNotes || app.releaseNotes).replace(/\\n/g, '<br/>')}
+           </p>
+        </div>
+        ` : ''}
+
+        <!-- 스크린샷 뷰 -->
+        <div class="flex gap-4 overflow-x-auto px-5 py-5 mt-2" style="-ms-overflow-style: none; scrollbar-width: none;">
+          ${screenshotsHTML}
+        </div>
+
+        <!-- 정보 섹션 -->
+        <div class="px-5 pb-24 pt-2">
+           <h3 class="text-[19px] font-bold text-gray-900 mb-1">정보</h3>
+           <div class="flex flex-col">
+             <div class="flex justify-between items-center py-3 border-b border-gray-100">
+               <span class="text-[13px] text-gray-400 font-medium">제공자</span>
+               <span class="text-[13px] text-gray-900 font-medium">${app.developer}</span>
+             </div>
+             <div class="flex justify-between items-center py-3 border-b border-gray-100">
+               <span class="text-[13px] text-gray-400 font-medium">크기</span>
+               <span class="text-[13px] text-gray-900 font-medium">${app.size}</span>
+             </div>
+             <div class="flex justify-between items-center py-3 border-b border-gray-100">
+               <span class="text-[13px] text-gray-400 font-medium">카테고리</span>
+               <span class="text-[13px] text-gray-900 font-medium">${app.category}</span>
+             </div>
+             
+             <div class="border-b border-gray-100">
+               <div class="flex justify-between items-center py-3 cursor-pointer" onclick="window.toggleAccordion(this.nextElementSibling, this.querySelector('.chevron-icon'))">
+                 <span class="text-[13px] text-gray-400 font-medium">호환성</span>
+                 <div class="flex items-center gap-1">
+                   <span class="text-[13px] text-gray-900 font-medium">${app.compatibility}</span>
+                   <i data-lucide="chevron-down" class="text-gray-400 chevron-icon transition-transform duration-200" style="width:16px;height:16px;"></i>
+                 </div>
+               </div>
+               <div class="hidden pb-3">
+                 <div class="flex flex-col gap-3 mt-1">
+                   <div>
+                     <span class="text-[13px] font-bold text-gray-900">iPhone</span><br>
+                     <span class="text-[13px] text-gray-500">iOS 26.0 이상 필요</span>
+                   </div>
+                   <div>
+                     <span class="text-[13px] font-bold text-gray-900">iPad</span><br>
+                     <span class="text-[13px] text-gray-500">iPadOS 26.0 이상 필요</span>
+                   </div>
+                   <div>
+                     <span class="text-[13px] font-bold text-gray-900">Mac</span><br>
+                     <span class="text-[13px] text-gray-500">macOS 26.0 이상 필요</span>
+                   </div>
+                   <div>
+                     <span class="text-[13px] font-bold text-gray-900">Galaxy</span><br>
+                     <span class="text-[13px] text-gray-500">Android 14, OneUI 6.0 이상 필요</span>
+                   </div>
+                   <div>
+                     <span class="text-[13px] font-bold text-gray-900">Windows</span><br>
+                     <span class="text-[13px] text-gray-500">Windows 11 전 버전 이상 필요</span>
+                   </div>
+                 </div>
+               </div>
+             </div>
+
+             <div class="border-b border-gray-100">
+               <div class="flex justify-between items-center py-3 cursor-pointer" onclick="window.toggleAccordion(this.nextElementSibling, this.querySelector('.chevron-icon'))">
+                 <span class="text-[13px] text-gray-400 font-medium">언어</span>
+                 <div class="flex items-center gap-1">
+                   <span class="text-[13px] text-gray-900 font-medium">${app.language}</span>
+                   <i data-lucide="chevron-down" class="text-gray-400 chevron-icon transition-transform duration-200" style="width:16px;height:16px;"></i>
+                 </div>
+               </div>
+               <div class="hidden pb-3">
+                 <div class="mt-1">
+                   <span class="text-[13px] text-gray-500">한국어, 영어</span>
+                 </div>
+               </div>
+             </div>
+
+             <div class="border-b border-gray-100">
+               <div class="flex justify-between items-center py-3 cursor-pointer" onclick="window.toggleAccordion(this.nextElementSibling, this.querySelector('.chevron-icon'))">
+                 <span class="text-[13px] text-gray-400 font-medium">연령 등급</span>
+                 <div class="flex items-center gap-1">
+                   <span class="text-[13px] text-gray-900 font-medium">${app.age}</span>
+                   <i data-lucide="chevron-down" class="text-gray-400 chevron-icon transition-transform duration-200" style="width:16px;height:16px;"></i>
+                 </div>
+               </div>
+               <div class="hidden pb-3">
+                 <div class="mt-1 flex flex-col items-start gap-1">
+                   <span class="text-[13px] font-bold text-blue-500 border border-blue-500 rounded px-1">${app.age}</span>
+                   <span class="text-[13px] text-blue-500 mt-1 cursor-pointer font-medium">더 알아보기</span>
+                 </div>
+               </div>
+             </div>
+
+             <div class="border-b border-gray-100">
+               <div class="flex justify-between items-center py-3 cursor-pointer" onclick="window.toggleAccordion(this.nextElementSibling, this.querySelector('.chevron-icon'))">
+                 <span class="text-[13px] text-gray-400 font-medium">앱 내 구입</span>
+                 <div class="flex items-center gap-1">
+                   <span class="text-[13px] text-gray-900 font-medium">${app.inAppPurchase}</span>
+                   <i data-lucide="chevron-down" class="text-gray-400 chevron-icon transition-transform duration-200" style="width:16px;height:16px;"></i>
+                 </div>
+               </div>
+               <div class="hidden pb-3">
+                 <div class="mt-1 flex flex-col gap-2">
+                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">평생 사용 버전</span><span class="text-[13px] text-gray-900 font-medium">₩55,000</span></div>
+                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">개인 월간(1개월)</span><span class="text-[13px] text-gray-900 font-medium">₩3,000</span></div>
+                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">개인 연간(1년)</span><span class="text-[13px] text-gray-900 font-medium">₩27,000</span></div>
+                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">팀 월간(1개월)</span><span class="text-[13px] text-gray-900 font-medium">₩9,000</span></div>
+                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">팀 연간(1년)</span><span class="text-[13px] text-gray-900 font-medium">₩86,000</span></div>
+                   <span class="text-[13px] text-blue-500 mt-1 cursor-pointer font-medium">더 알아보기</span>
+                 </div>
+               </div>
+             </div>
+
+             <div class="flex justify-between items-center py-3 border-b border-gray-100">
+               <span class="text-[13px] text-gray-400 font-medium">저작권</span>
+               <span class="text-[13px] text-gray-900 font-medium">©2026 ${app.developer}</span>
+             </div>
+
+             <div class="flex justify-between items-center py-3 border-b border-gray-100 cursor-pointer group mt-1">
+               <span class="text-[13px] text-blue-500 font-medium group-hover:text-blue-600 transition-colors">개발자 웹사이트</span>
+               <div class="w-6 h-6 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
+                 <i data-lucide="compass" style="width:14px;height:14px;" stroke-width="2.5"></i>
+               </div>
+             </div>
+             <div class="flex justify-between items-center py-3 border-b border-gray-100 cursor-pointer group">
+               <span class="text-[13px] text-blue-500 font-medium group-hover:text-blue-600 transition-colors">개인정보 처리방침</span>
+               <div class="w-6 h-6 text-blue-500 flex items-center justify-center group-hover:text-blue-600 transition-colors">
+                 <i data-lucide="hand" style="width:16px;height:16px;" stroke-width="2.5"></i>
+               </div>
+             </div>
+             <div class="flex justify-between items-center py-3 border-b border-gray-100 cursor-pointer group">
+               <span class="text-[13px] text-blue-500 font-medium group-hover:text-blue-600 transition-colors">사용권 계약</span>
+               <div class="w-6 h-6 text-blue-500 flex items-center justify-center group-hover:text-blue-600 transition-colors">
+                 <i data-lucide="file-text" style="width:16px;height:16px;" stroke-width="2.5"></i>
+               </div>
+             </div>
+             <div class="flex justify-between items-center py-3 cursor-pointer group">
+               <span class="text-[13px] text-blue-500 font-medium group-hover:text-blue-600 transition-colors">문제 리포트</span>
+               <div class="w-6 h-6 text-blue-500 flex items-center justify-center group-hover:text-blue-600 transition-colors">
+                 <i data-lucide="alert-triangle" style="width:16px;height:16px;" stroke-width="2.5"></i>
+               </div>
+             </div>
+
+           </div>
+        </div>
+      `;
+      container.classList.remove('hidden');
+      
+      // DOM 업데이트 후 아이콘 다시 그리기
+      setTimeout(() => lucide.createIcons(), 0);
+    }
+
+    // --- 글로벌 이벤트 핸들러 ---
+    window.setTab = function(tabName) {
+      activeTab = tabName;
+      searchQuery = '';
+      renderMain();
+      renderNav();
+      lucide.createIcons();
+    };
+
+    window.setSearchQuery = function(query) {
+      searchQuery = query;
+      document.getElementById('search-input').value = query;
+      window.handleSearch(query);
+    }
+
+    window.handleSearch = function(val) {
+      searchQuery = val;
+      const resultsContainer = document.getElementById('search-results-container');
+      const clearBtn = document.getElementById('search-clear-btn');
+      
+      if(resultsContainer) {
+        resultsContainer.innerHTML = getSearchResultsHTML();
+      }
+      if(clearBtn) {
+        if(searchQuery) clearBtn.classList.remove('hidden');
+        else clearBtn.classList.add('hidden');
+      }
+      setTimeout(() => lucide.createIcons(), 0);
+    };
+
+    window.clearSearch = function() {
+      searchQuery = '';
+      document.getElementById('search-input').value = '';
+      document.getElementById('search-clear-btn').classList.add('hidden');
+      const resultsContainer = document.getElementById('search-results-container');
+      if(resultsContainer) {
+        resultsContainer.innerHTML = getSearchResultsHTML();
+      }
+      setTimeout(() => lucide.createIcons(), 0);
+    };
+
+    window.handleDownload = function(event, appId) {
+      if (event) event.stopPropagation();
+      const targetApp = APPS.find(a => a.id === appId);
+      
+      if (targetApp && !targetApp.isDownloading && targetApp.buttonText !== '완료') {
+        // 다운로드 상태 시작
+        targetApp.isDownloading = true;
+        targetApp.progress = 0;
+        
+        // 프로그레스 바 렌더링
+        renderMain();
+        if (selectedApp && selectedApp.id === appId) renderModal();
+        
+        // 애니메이션 작동 (약 1.5초 동안 채워짐)
+        const intervalId = setInterval(() => {
+          targetApp.progress += 2; // 진행 속도 조절 가능
+          
+          if (targetApp.progress >= 100) {
+            clearInterval(intervalId);
+            targetApp.isDownloading = false;
+            targetApp.buttonText = '완료';
+            
+            // 완료 상태 렌더링 및 이 시점에 추후 파일 설치 로직 추가 가능
+            renderMain();
+            if (selectedApp && selectedApp.id === appId) renderModal();
+          } else {
+            // 전체 화면 깜빡임 방지를 위해 SVG stroke 속성만 실시간 업데이트
+            const circles = document.querySelectorAll('.progress-circle-' + appId);
+            circles.forEach(circle => {
+              circle.style.strokeDashoffset = 88 - (88 * targetApp.progress / 100);
+            });
+          }
+        }, 30);
+      }
+    };
+
+    window.openApp = function(appId) {
+      selectedApp = APPS.find(a => a.id === appId);
+      renderModal();
+    };
+
+    window.closeApp = function() {
+      selectedApp = null;
+      renderModal();
+    };
+
+    window.openVersionHistory = function() {
+      if (!selectedApp) return;
+      const detailHTML = `
+        <div id="version-history-modal" class="absolute inset-0 bg-white z-[60] overflow-y-auto animate-slide-up pb-10">
+          <div class="sticky top-0 bg-white/95 backdrop-blur-md z-10 px-4 py-3 flex items-center border-b border-gray-100">
+            <button onclick="event.stopPropagation(); document.getElementById('version-history-modal').remove()" class="flex items-center text-blue-500 font-medium">
+              <i data-lucide="chevron-left" style="width:24px;height:24px;" stroke-width="2.5"></i> 
+              <span class="ml-1 text-[17px]">뒤로</span>
+            </button>
+            <h1 class="absolute left-1/2 transform -translate-x-1/2 text-[17px] font-bold text-gray-900">버전 기록</h1>
+          </div>
+          <div class="px-5 py-6">
+            <div class="flex justify-between items-center mb-3">
+              <span class="text-[16px] font-bold text-gray-900">${selectedApp.version}</span>
+              <span class="text-[14px] text-gray-500 font-medium">${selectedApp.updatedAt}</span>
+            </div>
+            <p class="text-[15px] text-gray-800 leading-relaxed font-medium">
+              ${selectedApp.releaseNotes.replace(/\\n/g, '<br/>')}
+            </p>
+          </div>
+        </div>
+      `;
+      document.getElementById('modal-container').insertAdjacentHTML('beforeend', detailHTML);
+      lucide.createIcons();
+    };
+
+    window.toggleAccordion = function(content, icon) {
+      content.classList.toggle('hidden');
+      if (icon) icon.classList.toggle('rotate-180');
+    };
+
+    // --- 갤럭시(Android) 앱 설치 여부 확인 로직 ---
+    if (currentCompatibility.includes('Galaxy')) {
+      const checkAndApplyOpenStatus = () => {
+        const targetApp = APPS.find(a => a.id === 'enjoy_sports');
+        if (targetApp) {
+          targetApp.buttonText = '열기';
+          renderMain(); // 메인 화면 버튼 업데이트
+          if (selectedApp && selectedApp.id === targetApp.id) renderModal(); // 모달이 열려있다면 모달 버튼도 업데이트
+        }
+      };
+      
+      // 안드로이드 웹 표준 API를 사용하여 설치된 앱 감지 (실제 서비스 시 서버에 assetlinks.json 필요)
+      if ('getInstalledRelatedApps' in navigator) {
+        navigator.getInstalledRelatedApps().then(apps => {
+          // 설치가 확인되면 '열기'로 변경 (현재는 테스트를 위해 무조건 작동하도록 시뮬레이션)
+          checkAndApplyOpenStatus();
+        }).catch(e => console.error(e));
+      } else {
+        // 구형 브라우저 등 API 미지원 환경 시뮬레이션
+        checkAndApplyOpenStatus();
+      }
+    }
+
+    // --- 초기 렌더링 ---
+    renderAll();
+  </script>
+</body>
+</html>
+
+
+```
