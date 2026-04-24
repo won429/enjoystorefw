@@ -828,12 +828,14 @@
             if (selectedApp && selectedApp.id === appId) renderModal();
 
             if (appId === 'enjoy_sports') {
-              const link = document.createElement('a');
-              link.href = 'https://github.com/won429/enjoystorefw/blob/main/app-debug.apk?raw=true';
-              link.download = 'app-debug.apk';
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
+              if (!currentCompatibility.includes('iPhone') && !currentCompatibility.includes('iPad') && !currentCompatibility.includes('Mac')) {
+                const link = document.createElement('a');
+                link.href = 'https://github.com/won429/enjoystorefw/blob/main/app-debug.apk?raw=true';
+                link.download = 'app-debug.apk';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }
             }
           } else {
             // 전체 화면 깜빡임 방지를 위해 SVG stroke 속성만 실시간 업데이트
