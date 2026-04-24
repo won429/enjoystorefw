@@ -154,10 +154,10 @@
         updatedAt: '2일 전',
         releaseNotes: '',
         buttonText: '출시예정',
-        cardBorderClass: 'border-8 border-[#8b3dff]',
-        bgClass: "bg-gradient-to-br from-purple-400 via-purple-500 to-indigo-500",
-        overlayClass: "bg-[#8b3dff]", 
-        iconBg: "bg-gradient-to-br from-pink-500 to-rose-600",
+        cardBorderClass: 'border-8 border-[#b34700]',
+        bgClass: "bg-gradient-to-br from-[#f59e0b] via-[#ea580c] to-[#b34700]",
+        overlayClass: "bg-[#b34700]", 
+        iconBg: "bg-gradient-to-br from-[#f59e0b] to-[#ea580c]",
         iconText: "E",
         iconUrl: "https://github.com/won429/enjoystorefw/blob/main/en.png?raw=true",
         bannerUrl: "https://github.com/won429/enjoystorefw/blob/main/sdf.png?raw=true",
@@ -245,17 +245,17 @@
                 onclick="openApp('${app.id}')"
               >
                 <div class="flex-1 relative ${app.bgClass} flex items-center justify-center overflow-hidden">
-                  ${app.bannerUrl ? `<img src="${app.bannerUrl}" class="absolute inset-0 w-full h-full object-cover" />` : ''}
-                  ${app.badge ? `<div class="absolute top-0 left-0 bg-[#8b3dff] text-white text-[12px] font-bold px-3 py-1.5 rounded-br-[16px] z-10 shadow-sm">${app.badge}</div>` : ''}
+                  ${app.bannerUrl ? `<img src="${app.bannerUrl}" class="absolute inset-0 w-full h-full object-cover object-top" />` : ''}
+                  ${app.badge ? `<div class="absolute top-0 left-0 ${app.overlayClass} text-white text-[12px] font-bold px-3 py-1.5 rounded-br-[16px] z-10 shadow-sm">${app.badge}</div>` : ''}
                   ${!app.bannerUrl ? `<div class="absolute w-full h-full opacity-20 flex items-center justify-center mix-blend-overlay">
                      <div class="text-[180px] font-black italic">${app.iconText}</div>
                   </div>` : ''}
                 </div>
                 
                 <div class="${app.overlayClass} flex flex-col text-white pb-4">
-                  <div class="px-4 pt-4 pb-3">
-                    <div class="text-[11px] text-white/90 font-bold mb-0.5">${app.updateTag}</div>
-                    <h2 class="text-[24px] font-extrabold mb-0.5 tracking-tight leading-tight">${app.bannerTitle}</h2>
+                  <div class="px-4 pt-6 pb-5">
+                    <div class="text-[11px] text-white/90 font-bold mb-1">${app.updateTag}</div>
+                    <h2 class="text-[24px] font-extrabold mb-1 tracking-tight leading-tight">${app.bannerTitle}</h2>
                     <p class="text-[12px] text-white/80">${app.bannerSubtitle}</p>
                   </div>
                   <div class="flex items-center justify-between px-4">
@@ -308,7 +308,7 @@
                 <div class="w-[52px] h-[52px] flex-shrink-0 ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-xl font-black shadow-sm group-hover:scale-105 transition-transform overflow-hidden">
                   ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover" />` : app.iconText}
                 </div>
-                <div class="flex-1 border-b border-gray-100 pb-4 flex justify-between items-center">
+                <div class="flex-1 border-b border-gray-100 py-2 flex justify-between items-center">
                   <div>
                     <h4 class="font-semibold text-gray-900 text-[14px] mb-0.5">${app.title}</h4>
                     <p class="text-[12px] text-gray-500">${app.category}</p>
@@ -389,7 +389,7 @@
               <div class="w-[52px] h-[52px] ${app.iconBg} rounded-[22.5%] flex items-center justify-center text-white text-xl font-black shadow-sm overflow-hidden">
                 ${app.iconUrl ? `<img src="${app.iconUrl}" class="w-full h-full object-cover" />` : app.iconText}
               </div>
-              <div class="flex-1 flex justify-between items-center border-b border-gray-100 pb-3">
+              <div class="flex-1 flex justify-between items-center border-b border-gray-100 py-2">
                 <div>
                   <h4 class="font-semibold text-gray-900 text-[14px]">${app.title}</h4>
                   <p class="text-[12px] text-gray-500">${app.category}</p>
