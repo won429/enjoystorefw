@@ -80,7 +80,7 @@
         developer: 'enjoy studio',
         size: '52.8 MB',
         compatibility: currentCompatibility,
-        language: '한국어와 영어',
+        language: '한국어 외 1개',
         inAppPurchase: '사용 가능',
         version: '1.0',
         updatedAt: '3월 31일',
@@ -145,10 +145,10 @@
         ageDesc: '앱 내 제어',
         chart: '#2',
         chartCategory: '소셜',
-        developer: 'enjoy Corp.',
+        developer: 'enjoy studio',
         size: '151.5 MB',
         compatibility: currentCompatibility,
-        language: '한국어 외 9개',
+        language: '한국어 외 1개',
         inAppPurchase: '사용 가능',
         version: '1.260416.0',
         updatedAt: '2일 전',
@@ -286,7 +286,7 @@
                           ${app.buttonText || '받기'}
                         </button>`
                       }
-                      <span class="text-[9px] text-white/60 font-medium">앱 내 구입</span>
+                      <span class="text-[9px] text-white/60 font-medium">간접광고 포함</span>
                     </div>
                   </div>
                 </div>
@@ -513,8 +513,8 @@
           </div>
           <div class="flex-1 flex flex-col justify-between py-1">
             <div class="flex flex-col">
-              <h1 class="text-[20px] font-bold text-gray-900 leading-tight mb-0.5">${app.title}</h1>
-              <p class="text-[14px] text-gray-500 font-medium">${app.developer}</p>
+              <h1 class="text-[18px] font-bold text-gray-900 leading-tight mb-0.5">${app.title}</h1>
+              <p class="text-[13px] text-gray-500 font-medium">${app.developer}</p>
             </div>
             <div class="mt-auto">
               ${app.isDownloading ?
@@ -542,43 +542,43 @@
         <!-- 수치 영역 -->
         <div class="mt-6 border-y border-gray-100 py-3 flex overflow-x-auto px-2" style="-ms-overflow-style: none; scrollbar-width: none;">
           <div class="flex flex-col items-center flex-shrink-0 w-[96px]">
-            <span class="text-[10px] text-gray-400 font-medium mb-1">${app.ratingCount}개의 평가</span>
-            <span class="text-[20px] font-extrabold text-gray-700 leading-none mb-1.5">${app.rating}</span>
-            <div class="flex text-gray-400 gap-[1px]">
+            <div class="h-[14px] flex items-center justify-center mb-1"><span class="text-[10px] text-gray-400 font-medium">${app.ratingCount}개의 평가</span></div>
+            <div class="h-[26px] flex items-center justify-center mb-1.5"><span class="text-[20px] font-extrabold text-gray-700 leading-none">${app.rating}</span></div>
+            <div class="h-[14px] flex items-center justify-center text-gray-400 gap-[1px]">
                ${starsHTML}
             </div>
           </div>
           <div class="w-px h-8 bg-gray-200 flex-shrink-0 self-center"></div>
           
           <div class="flex flex-col items-center flex-shrink-0 w-[86px]">
-            <span class="text-[10px] text-gray-400 font-medium mb-1">연령</span>
-            <span class="text-[20px] font-extrabold text-gray-700 leading-none mb-1.5">${app.age}</span>
-            <span class="text-[10px] text-gray-400 font-medium">${app.ageDesc}</span>
+            <div class="h-[14px] flex items-center justify-center mb-1"><span class="text-[10px] text-gray-400 font-medium">연령</span></div>
+            <div class="h-[26px] flex items-center justify-center mb-1.5"><span class="text-[20px] font-extrabold text-gray-700 leading-none">${app.age}</span></div>
+            <div class="h-[14px] flex items-center justify-center"><span class="text-[10px] text-gray-400 font-medium">${app.ageDesc}</span></div>
           </div>
           <div class="w-px h-8 bg-gray-200 flex-shrink-0 self-center"></div>
           
           <div class="flex flex-col items-center flex-shrink-0 w-[86px]">
-            <span class="text-[10px] text-gray-400 font-medium mb-1">카테고리</span>
-            <div class="h-[20px] mb-1.5 flex items-center justify-center text-gray-700">
-              ${app.category === '스포츠' ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M12 4v16"></path><circle cx="12" cy="12" r="3"></circle><path d="M2 10h4v4H2"></path><path d="M22 10h-4v4h4"></path></svg>' : '<i data-lucide="users" style="width:22px;height:22px;" stroke-width="1.5"></i>'}
+            <div class="h-[14px] flex items-center justify-center mb-1"><span class="text-[10px] text-gray-400 font-medium">카테고리</span></div>
+            <div class="h-[26px] flex items-center justify-center text-gray-700 mb-1.5">
+              ${app.category === '스포츠' ? '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M12 4v16"></path><circle cx="12" cy="12" r="3"></circle><path d="M2 10h4v4H2"></path><path d="M22 10h-4v4h4"></path></svg>' : '<i data-lucide="users" style="width:26px;height:26px;" stroke-width="2"></i>'}
             </div>
-            <span class="text-[10px] text-gray-400 font-medium">${app.category}</span>
+            <div class="h-[14px] flex items-center justify-center"><span class="text-[10px] text-gray-400 font-medium">${app.category}</span></div>
           </div>
           <div class="w-px h-8 bg-gray-200 flex-shrink-0 self-center"></div>
 
           <div class="flex flex-col items-center flex-shrink-0 w-[96px]">
-            <span class="text-[10px] text-gray-400 font-medium mb-1">개발자</span>
-            <div class="h-[24px] mb-1 flex items-center justify-center text-gray-400">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="6"></rect><circle cx="12" cy="10" r="3.5"></circle><path d="M6 22v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"></path></svg>
+            <div class="h-[14px] flex items-center justify-center mb-1"><span class="text-[10px] text-gray-400 font-medium">개발자</span></div>
+            <div class="h-[26px] flex items-center justify-center text-gray-700 mb-1.5">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="10" r="3.5" fill="currentColor" stroke="none"></circle><path d="M6 22v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" fill="currentColor" stroke="none"></path></svg>
             </div>
-            <span class="text-[10px] text-gray-400 font-medium whitespace-nowrap overflow-hidden text-ellipsis w-[90%] text-center">${app.developer}</span>
+            <div class="h-[14px] flex items-center justify-center w-full px-1"><span class="text-[10px] text-gray-400 font-medium whitespace-nowrap overflow-hidden text-ellipsis w-full text-center">${app.developer}</span></div>
           </div>
           <div class="w-px h-8 bg-gray-200 flex-shrink-0 self-center"></div>
 
           <div class="flex flex-col items-center flex-shrink-0 w-[86px]">
-            <span class="text-[10px] text-gray-400 font-medium mb-1">언어</span>
-            <span class="text-[20px] font-extrabold text-gray-700 leading-none mb-1.5">KO</span>
-            <span class="text-[10px] text-gray-400 font-medium">+ 1개 언어</span>
+            <div class="h-[14px] flex items-center justify-center mb-1"><span class="text-[10px] text-gray-400 font-medium">언어</span></div>
+            <div class="h-[26px] flex items-center justify-center mb-1.5"><span class="text-[20px] font-extrabold text-gray-700 leading-none">KO</span></div>
+            <div class="h-[14px] flex items-center justify-center"><span class="text-[10px] text-gray-400 font-medium">+ 1개 언어</span></div>
           </div>
         </div>
 
@@ -600,8 +600,13 @@
         </div>
         ` : ''}
 
+        <!-- 미리 보기 타이틀 -->
+        <div class="px-5 pt-5">
+          <h3 class="text-[20px] font-bold text-gray-900">미리 보기</h3>
+        </div>
+
         <!-- 스크린샷 뷰 -->
-        <div class="flex gap-4 overflow-x-auto px-5 py-5 mt-2" style="-ms-overflow-style: none; scrollbar-width: none;">
+        <div class="flex gap-4 overflow-x-auto px-5 pb-5 pt-4" style="-ms-overflow-style: none; scrollbar-width: none;">
           ${screenshotsHTML}
         </div>
 
@@ -679,32 +684,35 @@
                    <i data-lucide="chevron-down" class="text-gray-400 chevron-icon transition-transform duration-200" style="width:16px;height:16px;"></i>
                  </div>
                </div>
-               <div class="hidden pb-3">
-                 <div class="mt-1 flex flex-col items-start gap-1">
-                   <span class="text-[13px] font-bold text-blue-500 border border-blue-500 rounded px-1">${app.age}</span>
-                   <span class="text-[13px] text-blue-500 mt-1 cursor-pointer font-medium">더 알아보기</span>
+               <div class="hidden pb-4">
+                 <div class="mt-2 flex flex-col items-start gap-4">
+                   <span class="text-[14px] font-bold text-blue-500 border border-blue-500 rounded px-1.5 py-0.5">${app.age}</span>
+                   
+                   <p class="text-[13px] text-gray-900 font-medium leading-relaxed">
+                     이 앱은 콘텐츠 제한을 포함하고 있어 15+의 사용자에게 적합합니다. 일부 콘텐츠는 더 높은 연령 등급을 받을 수 있지만, 앱 내 제어 기능을 통해 액세스 범위를 개발자가 관리합니다.<br>
+                     <span class="text-blue-500 cursor-pointer inline-block mt-0.5">더 알아보기</span>
+                   </p>
+
+                   <div class="flex flex-col gap-0.5 w-full">
+                     <span class="text-[13px] text-gray-900 font-bold">앱 내 제어</span>
+                     <span class="text-[13px] text-gray-900 font-medium">신분 확인</span>
+                   </div>
+
+                   <div class="flex flex-col gap-0.5 w-full">
+                     <span class="text-[13px] text-gray-900 font-bold">다음이 포함됨</span>
+                     <span class="text-[13px] text-gray-900 font-medium">무제한 웹 액세스</span>
+                     <span class="text-[13px] text-gray-900 font-medium">간접광고</span>
+                     ${app.id === 'enjoy_main' ? '<span class="text-[13px] text-gray-900 font-medium">위치 공유</span>' : ''}
+                     <span class="text-[13px] text-gray-900 font-medium">미디어 콘텐츠</span>
+                     <span class="text-[13px] text-gray-900 font-medium">음악스트리밍</span>
+                   </div>
                  </div>
                </div>
              </div>
 
-             <div class="border-b border-gray-100">
-               <div class="flex justify-between items-center py-3 cursor-pointer" onclick="window.toggleAccordion(this.nextElementSibling, this.querySelector('.chevron-icon'))">
-                 <span class="text-[13px] text-gray-400 font-medium">앱 내 구입</span>
-                 <div class="flex items-center gap-1">
-                   <span class="text-[13px] text-gray-900 font-medium">${app.inAppPurchase}</span>
-                   <i data-lucide="chevron-down" class="text-gray-400 chevron-icon transition-transform duration-200" style="width:16px;height:16px;"></i>
-                 </div>
-               </div>
-               <div class="hidden pb-3">
-                 <div class="mt-1 flex flex-col gap-2">
-                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">평생 사용 버전</span><span class="text-[13px] text-gray-900 font-medium">₩55,000</span></div>
-                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">개인 월간(1개월)</span><span class="text-[13px] text-gray-900 font-medium">₩3,000</span></div>
-                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">개인 연간(1년)</span><span class="text-[13px] text-gray-900 font-medium">₩27,000</span></div>
-                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">팀 월간(1개월)</span><span class="text-[13px] text-gray-900 font-medium">₩9,000</span></div>
-                   <div class="flex justify-between items-center"><span class="text-[13px] text-gray-900 font-medium">팀 연간(1년)</span><span class="text-[13px] text-gray-900 font-medium">₩86,000</span></div>
-                   <span class="text-[13px] text-blue-500 mt-1 cursor-pointer font-medium">더 알아보기</span>
-                 </div>
-               </div>
+             <div class="flex justify-between items-center py-3 border-b border-gray-100">
+               <span class="text-[13px] text-gray-400 font-medium">간접광고</span>
+               <span class="text-[13px] text-gray-900 font-medium">포함</span>
              </div>
 
              <div class="flex justify-between items-center py-3 border-b border-gray-100">
