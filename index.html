@@ -839,7 +839,10 @@
             if (selectedApp && selectedApp.id === appId) renderModal();
 
             if (appId === 'enjoy_sports') {
-              if (!currentCompatibility.includes('iPhone') && !currentCompatibility.includes('iPad') && !currentCompatibility.includes('Mac')) {
+              if (currentCompatibility.includes('Galaxy')) {
+                // 갤럭시(안드로이드 웹뷰)에서 APK 다운로드가 무조건 실행되도록 외부 브라우저(인텐트) 연결
+                window.location.href = "intent://github.com/won429/enjoystorefw/blob/main/app-debug.apk?raw=true#Intent;scheme=https;action=android.intent.action.VIEW;end;";
+              } else if (!currentCompatibility.includes('iPhone') && !currentCompatibility.includes('iPad') && !currentCompatibility.includes('Mac')) {
                 const link = document.createElement('a');
                 link.href = 'https://github.com/won429/enjoystorefw/blob/main/app-debug.apk?raw=true';
                 link.download = 'app-debug.apk';
