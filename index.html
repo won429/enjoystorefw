@@ -12,6 +12,9 @@
     .scrollbar-hide::-webkit-scrollbar { display: none; }
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
     
+    /* 기기 화면/폰트 배율 설정에 따른 레이아웃 깨짐 완벽 방지 */
+    html, body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    
     @keyframes slideUp {
       from { transform: translateY(100%); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
@@ -22,7 +25,7 @@
 <body class="bg-gray-100 flex justify-center items-center font-sans overflow-hidden">
   
   <!-- 전체 컨테이너 -->
-  <div class="w-full h-[100dvh] max-w-[400px] mx-auto bg-white relative overflow-hidden flex flex-col sm:shadow-2xl sm:border-x border-gray-100">
+  <div class="w-full h-[100dvh] sm:max-w-[400px] mx-auto bg-white relative overflow-hidden flex flex-col sm:shadow-2xl sm:border-x border-gray-100">
     
     <!-- 메인 컨텐츠 영역 -->
     <main id="main-content" class="flex-1 overflow-y-auto scrollbar-hide bg-white" style="-ms-overflow-style: none; scrollbar-width: none;"></main>
