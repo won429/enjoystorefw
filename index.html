@@ -800,8 +800,19 @@
       const targetApp = APPS.find(a => a.id === appId);
       
       if (targetApp && targetApp.buttonText === '열기') {
-        // 안드로이드 딥링크(인텐트)를 사용하여 실제 앱을 호출합니다.
-        window.location.href = "intent://open#Intent;scheme=enjoy;package=com.enjoy.sports;end;";
+        // 앱이 열리지 않을 경우(삭제된 상태)를 대비해 1초 뒤 '받기'로 되돌리는 폴백 로직
+        const clickTime = Date.now();
+        setTimeout(() => {
+          // 화면이 앱으로 넘어가지 않고 현재 웹페이지에 계속 머물러 있다면 (앱 미설치)
+          if (Date.now() - clickTime < 1500) {
+            targetApp.buttonText = '받기';
+            renderMain();
+            if (selectedApp && selectedApp.id === appId) renderModal();
+          }
+        }, 1000);
+
+        // 안드로이드 딥링크(인텐트)를 사용하여 실제 앱을 확실하게 호출합니다.
+        window.location.href = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.enjoy.sports;end;";
         return;
       }
 
@@ -903,12 +914,11 @@
       // 안드로이드 웹 표준 API를 사용하여 설치된 앱 감지 (실제 서비스 시 서버에 assetlinks.json 필요)
       if ('getInstalledRelatedApps' in navigator) {
         navigator.getInstalledRelatedApps().then(apps => {
-          // 설치가 확인되면 '열기'로 변경 (현재는 테스트를 위해 무조건 작동하도록 시뮬레이션)
-          checkAndApplyOpenStatus();
+          // 실제 앱이 설치되어 있음이 확인될 때만 '열기'로 변경하도록 수정 (무조건 작동하는 시뮬레이션 제거)
+          if (apps && apps.length > 0) {
+            checkAndApplyOpenStatus();
+          }
         }).catch(e => console.error(e));
-      } else {
-        // 구형 브라우저 등 API 미지원 환경 시뮬레이션
-        checkAndApplyOpenStatus();
       }
     }
 
