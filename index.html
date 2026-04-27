@@ -920,23 +920,38 @@
 
     // --- 갤럭시(Android) 앱 설치 여부 확인 로직 ---
     if (currentCompatibility.includes('Galaxy')) {
-      const checkAndApplyOpenStatus = () => {
-        const targetApp = APPS.find(a => a.id === 'enjoy_sports');
-        if (targetApp) {
-          targetApp.buttonText = '열기';
-          renderMain(); // 메인 화면 버튼 업데이트
-          if (selectedApp && selectedApp.id === targetApp.id) renderModal(); // 모달이 열려있다면 모달 버튼도 업데이트
-        }
-      };
-      
-      // 안드로이드 웹 표준 API를 사용하여 설치된 앱 감지 (실제 서비스 시 서버에 assetlinks.json 필요)
-      if ('getInstalledRelatedApps' in navigator) {
-        navigator.getInstalledRelatedApps().then(apps => {
-          // 실제 앱이 설치되어 있음이 확인될 때만 '열기'로 변경하도록 수정 (무조건 작동하는 시뮬레이션 제거)
-          if (apps && apps.length > 0) {
-            checkAndApplyOpenStatus();
+      // 안드로이드 스튜디오(웹뷰)에서 주입한 비밀 통신(브릿지)이 있는지 확인
+      if (window.EnjoyStoreNative && window.EnjoyStoreNative.getAppInfo) {
+        try {
+          // 안드로이드 시스템에 직접 패키지명으로 앱 정보를 물어봄
+          const appInfoJson = window.EnjoyStoreNative.getAppInfo('com.example.kbo');
+          const appInfo = JSON.parse(appInfoJson);
+          
+          if (appInfo.installed) {
+            // 앱이 설치되어 있다면 기기에 깔린 버전 코드를 통신 함수로 전달!
+            window.checkAppVersion(appInfo.versionCode);
           }
-        }).catch(e => console.error(e));
+        } catch (e) {
+          console.error("앱 정보 통신 오류:", e);
+        }
+      } else {
+        // 일반 모바일 브라우저(크롬 등) 접속 시를 위한 기존 예비(폴백) 로직
+        const checkAndApplyOpenStatus = () => {
+          const targetApp = APPS.find(a => a.id === 'enjoy_sports');
+          if (targetApp) {
+            targetApp.buttonText = '열기';
+            renderMain(); 
+            if (selectedApp && selectedApp.id === targetApp.id) renderModal(); 
+          }
+        };
+        
+        if ('getInstalledRelatedApps' in navigator) {
+          navigator.getInstalledRelatedApps().then(apps => {
+            if (apps && apps.length > 0) {
+              checkAndApplyOpenStatus();
+            }
+          }).catch(e => console.error(e));
+        }
       }
     }
 
