@@ -803,17 +803,6 @@
       const targetApp = APPS.find(a => a.id === appId);
       
       if (targetApp && targetApp.buttonText === '열기') {
-        // 앱이 열리지 않을 경우(삭제된 상태)를 대비해 1초 뒤 '받기'로 되돌리는 폴백 로직
-        const clickTime = Date.now();
-        setTimeout(() => {
-          // 화면이 앱으로 넘어가지 않고 현재 웹페이지에 계속 머물러 있다면 (앱 미설치)
-          if (Date.now() - clickTime < 1500) {
-            targetApp.buttonText = '받기';
-            renderMain();
-            if (selectedApp && selectedApp.id === appId) renderModal();
-          }
-        }, 1000);
-
         // 안드로이드 스튜디오 브릿지를 통해 네이티브 앱을 확실하게 호출합니다.
         if (window.EnjoyStoreNative && window.EnjoyStoreNative.openApp) {
           window.EnjoyStoreNative.openApp('com.example.kbo');
@@ -921,6 +910,25 @@
         if (selectedApp && selectedApp.id === targetApp.id) renderModal();
       }
     };
+
+    // --- 앱 복귀 감지 및 상태 동기화 ---
+    window.addEventListener('enjoystore-app-resume', function() {
+      if (window.EnjoyStoreNative && window.EnjoyStoreNative.getAppInfo) {
+        try {
+          const appInfoJson = window.EnjoyStoreNative.getAppInfo('com.example.kbo');
+          const appInfo = JSON.parse(appInfoJson);
+          const targetApp = APPS.find(a => a.id === 'enjoy_sports');
+          
+          if (appInfo.installed) {
+            window.checkAppVersion(appInfo.versionCode);
+          } else if (targetApp) {
+            targetApp.buttonText = '받기';
+            renderMain();
+            if (selectedApp && selectedApp.id === targetApp.id) renderModal();
+          }
+        } catch (e) { console.error(e); }
+      }
+    });
 
     // --- 갤럭시(Android) 앱 설치 여부 확인 로직 ---
     if (currentCompatibility.includes('Galaxy')) {
