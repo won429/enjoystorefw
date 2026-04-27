@@ -814,8 +814,12 @@
           }
         }, 1000);
 
-        // 안드로이드 딥링크(인텐트)를 사용하여 실제 앱을 확실하게 호출합니다.
-        window.location.href = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.example.kbo;end;";
+        // 안드로이드 스튜디오 브릿지를 통해 네이티브 앱을 확실하게 호출합니다.
+        if (window.EnjoyStoreNative && window.EnjoyStoreNative.openApp) {
+          window.EnjoyStoreNative.openApp('com.example.kbo');
+        } else {
+          window.location.href = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.example.kbo;end;";
+        }
         return;
       }
 
