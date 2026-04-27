@@ -66,6 +66,7 @@
     const APPS = [
       {
         id: 'enjoy_sports',
+        packageName: 'com.example.kbo',
         cardHeader: '야구팬들은 몬참쥐 우예참노',
         badge: '',
         updateTag: '전시기에게 사랑받는 앱',
@@ -81,22 +82,26 @@
         chart: '#1',
         chartCategory: '스포츠',
         developer: 'enjoy studio',
-        size: '52.8 MB',
+        size: '16.16 MB',
         compatibility: currentCompatibility,
         language: '한국어 외 1개',
         inAppPurchase: '사용 가능',
         version: '1.1',
-        updatedAt: '3월 31일',
-        releaseNotes: '서비스 오픈!\\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!\\n우리팀은 몇등이었더라? 순위도 확인해보실 수 있습니다.',
-        shortReleaseNotes: '서비스 오픈!\\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!....',
+        updatedAt: '4월 27일',
+        releaseNotes: '앱 개발 테스트',
+        shortReleaseNotes: '앱 개발 테스트',
+        versionHistory: [
+          { version: '1.1', date: '4월 27일', notes: '앱 개발 테스트' },
+          { version: '1.0', date: '3월 31일', notes: '서비스 오픈!\\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!\\n우리팀은 몇등이었더라? 순위도 확인해보실 수 있습니다.' }
+        ],
         buttonText: '받기',
         cardBorderClass: '',
         bgClass: "bg-gradient-to-br from-teal-200 via-emerald-300 to-teal-500",
         overlayClass: "bg-[#182236]", 
         iconBg: "bg-blue-600",
         iconText: "K",
-        iconUrl: "https://github.com/won429/enjoystorefw/blob/main/kbo.png?raw=true",
-        bannerUrl: "https://github.com/won429/enjoystorefw/blob/main/yego.png?raw=true",
+        iconUrl: "https://won429.github.io/enjoystorefw/kbo.png",
+        bannerUrl: "https://won429.github.io/enjoystorefw/yego.png",
         screenshots: [
           {
             title: "간편 홈",
@@ -104,7 +109,7 @@
             desc: "시청에 최적화된 UI 구성으로\\n최근 시청한 경기 이어보기 등의\\n기능을 제공합니다.",
             bg: "bg-[#eaf5f4]", 
             mockupColor: "bg-blue-600",
-            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/kia.png?raw=true"
+            imageUrl: "https://won429.github.io/enjoystorefw/kia.png"
           },
           {
             title: "UI 업데이트",
@@ -112,7 +117,7 @@
             desc: "중계만 시청할 수 있도록\\n야구 데이터 위주로\\n새롭게 개편했습니다.",
             bg: "bg-[#eef2f6]",
             mockupColor: "bg-[#1f2940]",
-            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/samsung.png?raw=true"
+            imageUrl: "https://won429.github.io/enjoystorefw/samsung.png"
           },
           {
             title: "모든 기능",
@@ -120,7 +125,7 @@
             desc: "다양한 기능들을\\n지금 바로 경험해보세요.",
             bg: "bg-purple-50",
             mockupColor: "bg-gradient-to-b from-purple-400 to-indigo-500",
-            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/all.png?raw=true"
+            imageUrl: "https://won429.github.io/enjoystorefw/all.png"
           },
           {
             title: "응원가",
@@ -128,12 +133,58 @@
             desc: "응원가와 함께\\n경기를 즐겨보세요.",
             bg: "bg-purple-50",
             mockupColor: "bg-gradient-to-b from-purple-400 to-indigo-500",
-            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/music.png?raw=true"
+            imageUrl: "https://won429.github.io/enjoystorefw/music.png"
+          }
+        ],
+      },
+      {
+        id: 'enjoy_store_official',
+        packageName: 'com.won429.enjoystore',
+        cardHeader: '모든 즐거움의 시작',
+        badge: '공식',
+        updateTag: '엔조이 스토어 공식 앱',
+        bannerTitle: '엔조이 앱스토어',
+        bannerSubtitle: '최신 버전으로 만나는 공식 스토어',
+        title: '엔조이 앱스토어',
+        subtitle: '다양한 서비스를 한 곳에서 (도구)',
+        category: '도구',
+        rating: '0',
+        ratingCount: '0',
+        age: '15+',
+        ageDesc: '세',
+        chart: '#1',
+        chartCategory: '도구',
+        developer: 'enjoy studio',
+        size: '14.9 MB',
+        compatibility: currentCompatibility,
+        language: '한국어 외 1개',
+        inAppPurchase: '없음',
+        version: '1.0',
+        updatedAt: '4월 27일',
+        releaseNotes: '엔조이 관련 앱을 다운 받을 수 있는 앱스토어입니다.\\n설치는 물론, 업데이트까지 가능한 스토어!\\n*단, 자동업데이트는 평생 지원하지 않습니다.',
+        shortReleaseNotes: '엔조이 관련 앱을 다운 받을 수 있는 앱스토어입니다. 설치는 물론, 업데이트까지 가능한 스토어!...',
+        buttonText: '열기',
+        cardBorderClass: 'border-4 border-blue-500',
+        bgClass: "bg-gradient-to-br from-blue-400 via-blue-500 to-indigo-600",
+        overlayClass: "bg-[#1e293b]",
+        iconBg: "bg-white",
+        iconText: "S",
+        iconUrl: "https://won429.github.io/enjoystorefw/store.PNG",
+        bannerUrl: "",
+        screenshots: [
+          {
+            title: "공식 스토어",
+            titleColor: "text-blue-800",
+            desc: "안전하고 빠른\\n앱 다운로드를 지원합니다.",
+            bg: "bg-blue-50",
+            mockupColor: "bg-blue-500",
+            imageUrl: ""
           }
         ],
       },
       {
         id: 'enjoy_main',
+        packageName: 'com.example.enjoymain',
         cardHeader: '추억을 떠올리고 싶다면',
         badge: '출시 예정',
         updateTag: '2026년 출시 예정',
@@ -162,8 +213,8 @@
         overlayClass: "bg-[#b34700]", 
         iconBg: "bg-gradient-to-br from-[#f59e0b] to-[#ea580c]",
         iconText: "E",
-        iconUrl: "https://github.com/won429/enjoystorefw/blob/main/en.png?raw=true",
-        bannerUrl: "https://github.com/won429/enjoystorefw/blob/main/sdf.png?raw=true",
+        iconUrl: "https://won429.github.io/enjoystorefw/en.png",
+        bannerUrl: "https://won429.github.io/enjoystorefw/sdf.png",
         releaseDateInfo: "2026년 중 출시 예정",
         screenshots: [
           {
@@ -172,7 +223,7 @@
             desc: "나에게 최적화된 매칭 UI로\\n새로운 인연을 찾아보세요.",
             bg: "bg-rose-50",
             mockupColor: "bg-gradient-to-b from-rose-400 to-pink-500",
-            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/enjoymain.png?raw=true"
+            imageUrl: "https://won429.github.io/enjoystorefw/enjoymain.png"
           },
           {
             title: "안전한 대화",
@@ -180,7 +231,7 @@
             desc: "철저한 인증 시스템으로\\n안심하고 대화할 수 있습니다.",
             bg: "bg-pink-50",
             mockupColor: "bg-gradient-to-b from-pink-400 to-purple-400",
-            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/moim.png?raw=true"
+            imageUrl: "https://won429.github.io/enjoystorefw/moim.png"
           },
           {
             title: "다양한 콘텐츠",
@@ -188,7 +239,7 @@
             desc: "더욱 풍성해진 즐길거리와\\n새로운 기능을 만나보세요.",
             bg: "bg-purple-50",
             mockupColor: "bg-gradient-to-b from-purple-500 to-indigo-500",
-            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/the.png?raw=true"
+            imageUrl: "https://won429.github.io/enjoystorefw/the.png"
           },
           {
             title: "주변 탐색",
@@ -196,7 +247,7 @@
             desc: "지도에서 내 주변의\\n다양한 정보를 확인해보세요.",
             bg: "bg-indigo-50",
             mockupColor: "bg-gradient-to-b from-indigo-400 to-purple-500",
-            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/map.png?raw=true"
+            imageUrl: "https://won429.github.io/enjoystorefw/map.png"
           },
           {
             title: "편의 기능",
@@ -204,7 +255,7 @@
             desc: "다양한 편의 기능으로\\n더욱 편리한 일상을 즐겨보세요.",
             bg: "bg-blue-50",
             mockupColor: "bg-gradient-to-b from-blue-400 to-indigo-500",
-            imageUrl: "https://github.com/won429/enjoystorefw/blob/main/jiha.png?raw=true"
+            imageUrl: "https://won429.github.io/enjoystorefw/jiha.png"
           }
         ],
       }
@@ -563,7 +614,7 @@
           <div class="flex flex-col items-center flex-shrink-0 w-[86px]">
             <div class="h-[14px] flex items-center justify-center mb-1"><span class="text-[10px] text-gray-400 font-medium">카테고리</span></div>
             <div class="h-[26px] flex items-center justify-center text-gray-700 mb-1.5">
-              ${app.category === '스포츠' ? '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M12 4v16"></path><circle cx="12" cy="12" r="3"></circle><path d="M2 10h4v4H2"></path><path d="M22 10h-4v4h4"></path></svg>' : '<i data-lucide="users" style="width:26px;height:26px;" stroke-width="2"></i>'}
+              ${app.category === '스포츠' ? '<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M12 4v16"></path><circle cx="12" cy="12" r="3"></circle><path d="M2 10h4v4H2"></path><path d="M22 10h-4v4h4"></path></svg>' : (app.category === '도구' ? '<i data-lucide="wrench" style="width:26px;height:26px;" stroke-width="2"></i>' : '<i data-lucide="users" style="width:26px;height:26px;" stroke-width="2"></i>')}
             </div>
             <div class="h-[14px] flex items-center justify-center"><span class="text-[10px] text-gray-400 font-medium">${app.category}</span></div>
           </div>
@@ -581,7 +632,7 @@
           <div class="flex flex-col items-center flex-shrink-0 w-[86px]">
             <div class="h-[14px] flex items-center justify-center mb-1"><span class="text-[10px] text-gray-400 font-medium">언어</span></div>
             <div class="h-[26px] flex items-center justify-center mb-1.5"><span class="text-[20px] font-extrabold text-gray-700 leading-none">KO</span></div>
-            <div class="h-[14px] flex items-center justify-center"><span class="text-[10px] text-gray-400 font-medium">+ 1개 언어</span></div>
+            <div class="h-[14px] flex items-center justify-center"><span class="text-[10px] text-gray-400 font-medium">${app.language.includes('외') ? '+ 1개 언어' : ''}</span></div>
           </div>
         </div>
 
@@ -707,7 +758,7 @@
                      <span class="text-[13px] text-gray-900 font-medium">간접광고</span>
                      ${app.id === 'enjoy_main' ? '<span class="text-[13px] text-gray-900 font-medium">위치 공유</span>' : ''}
                      <span class="text-[13px] text-gray-900 font-medium">미디어 콘텐츠</span>
-                     <span class="text-[13px] text-gray-900 font-medium">음악스트리밍</span>
+                     ${app.id !== 'enjoy_store_official' ? '<span class="text-[13px] text-gray-900 font-medium">음악스트리밍</span>' : ''}
                    </div>
                  </div>
                </div>
@@ -803,11 +854,11 @@
       const targetApp = APPS.find(a => a.id === appId);
       
       if (targetApp && targetApp.buttonText === '열기') {
-        // 안드로이드 스튜디오 브릿지를 통해 네이티브 앱을 확실하게 호출합니다.
+        // 안드로이드 스튜디오 브릿지를 통해 해당 앱의 패키지명을 호출하여 실행합니다.
         if (window.EnjoyStoreNative && window.EnjoyStoreNative.openApp) {
-          window.EnjoyStoreNative.openApp('com.example.kbo');
+          window.EnjoyStoreNative.openApp(targetApp.packageName);
         } else {
-          window.location.href = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.example.kbo;end;";
+          window.location.href = `intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=${targetApp.packageName};end;`;
         }
         return;
       }
@@ -837,7 +888,7 @@
             if (appId === 'enjoy_sports') {
               if (!currentCompatibility.includes('iPhone') && !currentCompatibility.includes('iPad') && !currentCompatibility.includes('Mac')) {
                 const link = document.createElement('a');
-                link.href = 'https://github.com/won429/enjoystorefw/blob/main/kbo.apk?raw=true';
+                link.href = 'https://won429.github.io/enjoystorefw/kbo.apk';
                 link.download = 'kbo.apk';
                 document.body.appendChild(link);
                 link.click();
@@ -867,27 +918,38 @@
 
     window.openVersionHistory = function() {
       if (!selectedApp) return;
+      
+      const histories = selectedApp.versionHistory || [
+        { version: selectedApp.version, date: selectedApp.updatedAt, notes: selectedApp.releaseNotes }
+      ];
+
       const detailHTML = `
         <div id="version-history-modal" class="absolute inset-0 bg-white z-[60] overflow-y-auto animate-slide-up pb-10">
-          <div class="sticky top-0 bg-white/95 backdrop-blur-md z-10 px-4 py-3 flex items-center border-b border-gray-100">
-            <button onclick="event.stopPropagation(); document.getElementById('version-history-modal').remove()" class="flex items-center text-blue-500 font-medium">
-              <i data-lucide="chevron-left" style="width:24px;height:24px;" stroke-width="2.5"></i> 
-              <span class="ml-1 text-[17px]">뒤로</span>
+          <div class="sticky top-0 bg-white/95 backdrop-blur-md z-10 px-4 py-3 flex items-center">
+            <button onclick="event.stopPropagation(); document.getElementById('version-history-modal').remove()" class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-gray-800 hover:bg-gray-200 transition">
+              <i data-lucide="chevron-left" style="width:20px;height:20px;" stroke-width="2.5"></i> 
             </button>
-            <h1 class="absolute left-1/2 transform -translate-x-1/2 text-[17px] font-bold text-gray-900">버전 기록</h1>
           </div>
-          <div class="px-5 py-6">
-            <div class="flex justify-between items-center mb-3">
-              <span class="text-[16px] font-bold text-gray-900">${selectedApp.version}</span>
-              <span class="text-[14px] text-gray-500 font-medium">${selectedApp.updatedAt}</span>
+          <div class="px-5 pt-2 py-6">
+            <h1 class="text-[28px] font-extrabold text-gray-900 mb-8 tracking-tight">버전 기록</h1>
+            <div class="flex flex-col gap-8">
+              ${histories.map(h => `
+                <div class="flex flex-col gap-2.5">
+                  <div class="flex justify-between items-start">
+                    <span class="text-[15px] font-extrabold text-gray-900">${h.version}</span>
+                    <span class="text-[13px] text-gray-400 font-medium mt-0.5">${h.date}</span>
+                  </div>
+                  <p class="text-[14px] text-gray-900 leading-relaxed font-medium">
+                    ${h.notes.replace(/\\n/g, '<br/>')}
+                  </p>
+                </div>
+              `).join('')}
             </div>
-            <p class="text-[15px] text-gray-800 leading-relaxed font-medium">
-              ${selectedApp.releaseNotes.replace(/\\n/g, '<br/>')}
-            </p>
           </div>
         </div>
       `;
-      document.getElementById('modal-container').insertAdjacentHTML('beforeend', detailHTML);
+      // 상세 화면 스크롤의 영향을 받지 않도록 최상단 부모 컨테이너에 독립적으로 띄움
+      document.getElementById('modal-container').parentNode.insertAdjacentHTML('beforeend', detailHTML);
       lucide.createIcons();
     };
 
@@ -915,9 +977,9 @@
     window.addEventListener('enjoystore-app-resume', function() {
       if (window.EnjoyStoreNative && window.EnjoyStoreNative.getAppInfo) {
         try {
-          const appInfoJson = window.EnjoyStoreNative.getAppInfo('com.example.kbo');
-          const appInfo = JSON.parse(appInfoJson);
           const targetApp = APPS.find(a => a.id === 'enjoy_sports');
+          const appInfoJson = window.EnjoyStoreNative.getAppInfo(targetApp.packageName);
+          const appInfo = JSON.parse(appInfoJson);
           
           if (appInfo.installed) {
             window.checkAppVersion(appInfo.versionCode);
@@ -935,8 +997,9 @@
       // 안드로이드 스튜디오(웹뷰)에서 주입한 비밀 통신(브릿지)이 있는지 확인
       if (window.EnjoyStoreNative && window.EnjoyStoreNative.getAppInfo) {
         try {
+          const targetApp = APPS.find(a => a.id === 'enjoy_sports');
           // 안드로이드 시스템에 직접 패키지명으로 앱 정보를 물어봄
-          const appInfoJson = window.EnjoyStoreNative.getAppInfo('com.example.kbo');
+          const appInfoJson = window.EnjoyStoreNative.getAppInfo(targetApp.packageName);
           const appInfo = JSON.parse(appInfoJson);
           
           if (appInfo.installed) {
