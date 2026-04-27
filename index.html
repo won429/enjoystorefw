@@ -86,6 +86,7 @@
         compatibility: currentCompatibility,
         language: '한국어 외 1개',
         inAppPurchase: '사용 가능',
+        latestVersionCode: 2,
         version: '1.1',
         updatedAt: '4월 27일',
         releaseNotes: '앱 개발 테스트',
@@ -159,12 +160,13 @@
         compatibility: currentCompatibility,
         language: '한국어 외 1개',
         inAppPurchase: '없음',
-        version: '1.0',
+        latestVersionCode: 2,
+        version: '1.1',
         updatedAt: '4월 27일',
         releaseNotes: '엔조이 관련 앱을 다운 받을 수 있는 앱스토어입니다.\\n설치는 물론, 업데이트까지 가능한 스토어!\\n*단, 자동업데이트는 평생 지원하지 않습니다.',
         shortReleaseNotes: '엔조이 관련 앱을 다운 받을 수 있는 앱스토어입니다. 설치는 물론, 업데이트까지 가능한 스토어!...',
         buttonText: '열기',
-        cardBorderClass: 'border-[4px] border-[#064e3b]',
+        cardBorderClass: 'border-[4px] border-[#064e3b] shadow-[0_0_0_1px_#064e3b,inset_0_0_0_1px_#064e3b]',
         bgClass: "bg-gradient-to-br from-emerald-400 via-emerald-500 to-green-600",
         overlayClass: "bg-[#064e3b]",
         iconBg: "bg-white",
@@ -894,6 +896,15 @@
                 link.click();
                 document.body.removeChild(link);
               }
+            } else if (appId === 'enjoy_store_official') {
+              if (!currentCompatibility.includes('iPhone') && !currentCompatibility.includes('iPad') && !currentCompatibility.includes('Mac')) {
+                const link = document.createElement('a');
+                link.href = 'https://won429.github.io/enjoystorefw/enjoystore.apk';
+                link.download = 'enjoystore.apk';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }
             }
           } else {
             // 전체 화면 깜빡임 방지를 위해 SVG stroke 속성만 실시간 업데이트
@@ -959,11 +970,10 @@
     };
 
     // --- 안드로이드 앱 버전 통신 (업데이트 확인) ---
-    window.checkAppVersion = function(installedVersionCode) {
-      const targetApp = APPS.find(a => a.id === 'enjoy_sports');
-      if (targetApp) {
-        const latestVersionCode = 2; // 최신 버전 코드
-        if (installedVersionCode < latestVersionCode) {
+    window.checkAppVersion = function(appId, installedVersionCode) {
+      const targetApp = APPS.find(a => a.id === appId);
+      if (targetApp && targetApp.latestVersionCode) {
+        if (installedVersionCode < targetApp.latestVersionCode) {
           targetApp.buttonText = '업데이트';
         } else {
           targetApp.buttonText = '열기';
@@ -977,17 +987,21 @@
     window.addEventListener('enjoystore-app-resume', function() {
       if (window.EnjoyStoreNative && window.EnjoyStoreNative.getAppInfo) {
         try {
-          const targetApp = APPS.find(a => a.id === 'enjoy_sports');
-          const appInfoJson = window.EnjoyStoreNative.getAppInfo(targetApp.packageName);
-          const appInfo = JSON.parse(appInfoJson);
-          
-          if (appInfo.installed) {
-            window.checkAppVersion(appInfo.versionCode);
-          } else if (targetApp) {
-            targetApp.buttonText = '받기';
-            renderMain();
-            if (selectedApp && selectedApp.id === targetApp.id) renderModal();
-          }
+          ['enjoy_sports', 'enjoy_store_official'].forEach(appId => {
+            const targetApp = APPS.find(a => a.id === appId);
+            if (targetApp) {
+              const appInfoJson = window.EnjoyStoreNative.getAppInfo(targetApp.packageName);
+              const appInfo = JSON.parse(appInfoJson);
+              
+              if (appInfo.installed) {
+                window.checkAppVersion(appId, appInfo.versionCode);
+              } else if (appId === 'enjoy_sports') {
+                targetApp.buttonText = '받기';
+                renderMain();
+                if (selectedApp && selectedApp.id === targetApp.id) renderModal();
+              }
+            }
+          });
         } catch (e) { console.error(e); }
       }
     });
@@ -997,15 +1011,19 @@
       // 안드로이드 스튜디오(웹뷰)에서 주입한 비밀 통신(브릿지)이 있는지 확인
       if (window.EnjoyStoreNative && window.EnjoyStoreNative.getAppInfo) {
         try {
-          const targetApp = APPS.find(a => a.id === 'enjoy_sports');
-          // 안드로이드 시스템에 직접 패키지명으로 앱 정보를 물어봄
-          const appInfoJson = window.EnjoyStoreNative.getAppInfo(targetApp.packageName);
-          const appInfo = JSON.parse(appInfoJson);
-          
-          if (appInfo.installed) {
-            // 앱이 설치되어 있다면 기기에 깔린 버전 코드를 통신 함수로 전달!
-            window.checkAppVersion(appInfo.versionCode);
-          }
+          ['enjoy_sports', 'enjoy_store_official'].forEach(appId => {
+            const targetApp = APPS.find(a => a.id === appId);
+            if (targetApp) {
+              // 안드로이드 시스템에 직접 패키지명으로 앱 정보를 물어봄
+              const appInfoJson = window.EnjoyStoreNative.getAppInfo(targetApp.packageName);
+              const appInfo = JSON.parse(appInfoJson);
+              
+              if (appInfo.installed) {
+                // 앱이 설치되어 있다면 기기에 깔린 버전 코드를 통신 함수로 전달!
+                window.checkAppVersion(appId, appInfo.versionCode);
+              }
+            }
+          });
         } catch (e) {
           console.error("앱 정보 통신 오류:", e);
         }
