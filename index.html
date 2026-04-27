@@ -85,7 +85,7 @@
         compatibility: currentCompatibility,
         language: '한국어 외 1개',
         inAppPurchase: '사용 가능',
-        version: '1.0',
+        version: '1.1',
         updatedAt: '3월 31일',
         releaseNotes: '서비스 오픈!\\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!\\n우리팀은 몇등이었더라? 순위도 확인해보실 수 있습니다.',
         shortReleaseNotes: '서비스 오픈!\\n실시간 점수와 시즌 일정 그리고 응원가와 나만의 승률까지!....',
@@ -815,7 +815,7 @@
         }, 1000);
 
         // 안드로이드 딥링크(인텐트)를 사용하여 실제 앱을 확실하게 호출합니다.
-        window.location.href = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.enjoy.sports;end;";
+        window.location.href = "intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=com.example.kbo;end;";
         return;
       }
 
@@ -901,6 +901,21 @@
     window.toggleAccordion = function(content, icon) {
       content.classList.toggle('hidden');
       if (icon) icon.classList.toggle('rotate-180');
+    };
+
+    // --- 안드로이드 앱 버전 통신 (업데이트 확인) ---
+    window.checkAppVersion = function(installedVersionCode) {
+      const targetApp = APPS.find(a => a.id === 'enjoy_sports');
+      if (targetApp) {
+        const latestVersionCode = 2; // 최신 버전 코드
+        if (installedVersionCode < latestVersionCode) {
+          targetApp.buttonText = '업데이트';
+        } else {
+          targetApp.buttonText = '열기';
+        }
+        renderMain();
+        if (selectedApp && selectedApp.id === targetApp.id) renderModal();
+      }
     };
 
     // --- 갤럭시(Android) 앱 설치 여부 확인 로직 ---
