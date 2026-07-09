@@ -261,6 +261,7 @@
         compatibility: currentCompatibility,
         language: '한국어 외 1개',
         inAppPurchase: '사용 가능',
+        latestVersionCode: 1,
         version: '1.260416.0',
         updatedAt: '2일 전',
         releaseNotes: '엔조이 앱이 정식 출시되었습니다.',
@@ -994,6 +995,15 @@
                 link.click();
                 document.body.removeChild(link);
               }
+            } else if (appId === 'enjoy_main') {
+              if (!currentCompatibility.includes('iPhone') && !currentCompatibility.includes('iPad') && !currentCompatibility.includes('Mac')) {
+                const link = document.createElement('a');
+                link.href = 'https://won429.github.io/enjoystorefw/enjoy.apk';
+                link.download = 'enjoy.apk';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+              }
             }
           } else {
             // 전체 화면 깜빡임 방지를 위해 SVG stroke 속성만 실시간 업데이트
@@ -1078,7 +1088,7 @@
     window.addEventListener('enjoystore-app-resume', function() {
       if (window.EnjoyStoreNative && window.EnjoyStoreNative.getAppInfo) {
         try {
-          ['enjoy_sports', 'enjoy_store_official'].forEach(appId => {
+          ['enjoy_sports', 'enjoy_store_official', 'enjoy_main'].forEach(appId => {
             const targetApp = APPS.find(a => a.id === appId);
             if (targetApp) {
               const appInfoJson = window.EnjoyStoreNative.getAppInfo(targetApp.packageName);
@@ -1086,7 +1096,7 @@
               
               if (appInfo.installed) {
                 window.checkAppVersion(appId, appInfo.versionCode);
-              } else if (appId === 'enjoy_sports') {
+              } else if (appId === 'enjoy_sports' || appId === 'enjoy_main') {
                 targetApp.buttonText = '받기';
                 renderMain();
                 if (selectedApp && selectedApp.id === targetApp.id) renderModal();
@@ -1102,7 +1112,7 @@
       // 안드로이드 스튜디오(웹뷰)에서 주입한 비밀 통신(브릿지)이 있는지 확인
       if (window.EnjoyStoreNative && window.EnjoyStoreNative.getAppInfo) {
         try {
-          ['enjoy_sports', 'enjoy_store_official'].forEach(appId => {
+          ['enjoy_sports', 'enjoy_store_official', 'enjoy_main'].forEach(appId => {
             const targetApp = APPS.find(a => a.id === appId);
             if (targetApp) {
               // 안드로이드 시스템에 직접 패키지명으로 앱 정보를 물어봄
