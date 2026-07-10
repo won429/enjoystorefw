@@ -84,10 +84,16 @@
 
   <script>
     // --- 기기 판별 로직 ---
+    const userAgent = navigator.userAgent;
+    const isAndroidDevice = /Android/i.test(userAgent);
+    const isGalaxyTabDevice = isAndroidDevice && (
+      /SM-(?:T|X|P)[A-Z0-9]+/i.test(userAgent)
+      || (/SAMSUNG|SamsungBrowser/i.test(userAgent) && !/Mobile/i.test(userAgent))
+    );
+
     function getDeviceCompatibility() {
-      const ua = navigator.userAgent;
-      const isAndroid = /Android/i.test(ua);
-      const isGalaxyTab = /SM-(?:T|X|P)\d/i.test(ua) || (isAndroid && !/Mobile/i.test(ua));
+      const ua = userAgent;
+      const isAndroid = isAndroidDevice;
       let device = 'iPhone'; // 기본값
       if (/iPad/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
         device = 'iPad';
@@ -95,7 +101,7 @@
         device = 'iPhone';
       } else if (/Mac/i.test(ua)) {
         device = 'Mac';
-      } else if (isGalaxyTab) {
+      } else if (isGalaxyTabDevice) {
         return '이 Galaxy Tab과 호환 불가';
       } else if (/SM-|SAMSUNG|Galaxy/i.test(ua) || isAndroid) {
         device = 'Galaxy';
@@ -351,6 +357,13 @@
         ],
       }
     ];
+
+    if (isGalaxyTabDevice) {
+      APPS.forEach(app => {
+        app.buttonText = '미지원';
+        app.isDownloading = false;
+      });
+    }
     APPS.sort((a, b) => a.id === 'enjoy_main' ? -1 : b.id === 'enjoy_main' ? 1 : 0);
 
     // --- 상태 관리 ---
@@ -427,9 +440,9 @@
                            </svg>
                          </div>` :
                         `<button 
-                          onclick="if('${app.buttonText}' !== '완료' && '${app.buttonText}' !== '출시예정') { window.handleDownload(event, '${app.id}'); } else { event.stopPropagation(); }"
-                          class="${app.buttonText === '완료' ? 'bg-white/10 text-white/50 cursor-default' : (app.buttonText === '출시예정' ? 'bg-white/20 cursor-default' : 'bg-white/20 hover:bg-white/30')} backdrop-blur-md w-auto px-3.5 min-w-[60px] py-1.5 rounded-full text-[13px] font-bold transition mb-1 whitespace-nowrap"
-                          ${(app.buttonText === '완료' || app.buttonText === '출시예정') ? 'disabled' : ''}
+                          onclick="if('${app.buttonText}' !== '완료' && '${app.buttonText}' !== '출시예정' && '${app.buttonText}' !== '미지원') { window.handleDownload(event, '${app.id}'); } else { event.stopPropagation(); }"
+                          class="${(app.buttonText === '완료' || app.buttonText === '미지원') ? 'bg-white/10 text-white/50 cursor-default' : (app.buttonText === '출시예정' ? 'bg-white/20 cursor-default' : 'bg-white/20 hover:bg-white/30')} backdrop-blur-md w-auto px-3.5 min-w-[60px] py-1.5 rounded-full text-[13px] font-bold transition mb-1 whitespace-nowrap"
+                          ${(app.buttonText === '완료' || app.buttonText === '출시예정' || app.buttonText === '미지원') ? 'disabled' : ''}
                         >
                           ${app.buttonText || '받기'}
                         </button>`
@@ -470,7 +483,7 @@
                          <rect x="20" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
                        </svg>
                      </div>` :
-                    `<button onclick="if('${app.buttonText}' !== '완료' && '${app.buttonText}' !== '출시예정') { window.handleDownload(event, '${app.id}'); } else { event.stopPropagation(); }" class="${app.buttonText === '완료' ? 'bg-gray-200 text-gray-400 cursor-default' : (app.buttonText === '출시예정' ? 'bg-gray-100 text-blue-400 cursor-default' : 'bg-gray-100 hover:bg-gray-200 text-blue-600')} px-3.5 py-1.5 rounded-full text-[12px] font-bold transition whitespace-nowrap" ${(app.buttonText === '완료' || app.buttonText === '출시예정') ? 'disabled' : ''}>
+                    `<button onclick="if('${app.buttonText}' !== '완료' && '${app.buttonText}' !== '출시예정' && '${app.buttonText}' !== '미지원') { window.handleDownload(event, '${app.id}'); } else { event.stopPropagation(); }" class="${(app.buttonText === '완료' || app.buttonText === '미지원') ? 'bg-gray-200 text-gray-400 cursor-default' : (app.buttonText === '출시예정' ? 'bg-gray-100 text-blue-400 cursor-default' : 'bg-gray-100 hover:bg-gray-200 text-blue-600')} px-3.5 py-1.5 rounded-full text-[12px] font-bold transition whitespace-nowrap" ${(app.buttonText === '완료' || app.buttonText === '출시예정' || app.buttonText === '미지원') ? 'disabled' : ''}>
                       ${app.buttonText || '받기'}
                     </button>`
                   }
@@ -551,7 +564,7 @@
                        <rect x="20" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
                      </svg>
                    </div>` :
-                  `<button onclick="if('${app.buttonText}' !== '완료' && '${app.buttonText}' !== '출시예정') { window.handleDownload(event, '${app.id}'); } else { event.stopPropagation(); }" class="${app.buttonText === '완료' ? 'bg-gray-200 text-gray-400 cursor-default' : (app.buttonText === '출시예정' ? 'bg-gray-100 text-blue-400 cursor-default' : 'bg-gray-100 text-blue-600')} px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap" ${(app.buttonText === '완료' || app.buttonText === '출시예정') ? 'disabled' : ''}>${app.buttonText || '받기'}</button>`
+                  `<button onclick="if('${app.buttonText}' !== '완료' && '${app.buttonText}' !== '출시예정' && '${app.buttonText}' !== '미지원') { window.handleDownload(event, '${app.id}'); } else { event.stopPropagation(); }" class="${(app.buttonText === '완료' || app.buttonText === '미지원') ? 'bg-gray-200 text-gray-400 cursor-default' : (app.buttonText === '출시예정' ? 'bg-gray-100 text-blue-400 cursor-default' : 'bg-gray-100 text-blue-600')} px-3.5 py-1.5 rounded-full text-[12px] font-bold whitespace-nowrap" ${(app.buttonText === '완료' || app.buttonText === '출시예정' || app.buttonText === '미지원') ? 'disabled' : ''}>${app.buttonText || '받기'}</button>`
                 }
               </div>
             </div>
@@ -684,7 +697,7 @@
                      <rect x="20" y="12" width="2.5" height="12" rx="1" fill="currentColor"></rect>
                    </svg>
                  </div>` :
-                `<button onclick="if('${app.buttonText}' !== '완료' && '${app.buttonText}' !== '출시예정') { window.handleDownload(event, '${app.id}'); }" class="${app.buttonText === '완료' ? 'bg-gray-200 text-gray-400 cursor-default' : (app.buttonText === '출시예정' ? 'bg-blue-400 text-white cursor-default' : 'bg-blue-500 hover:bg-blue-600 text-white')} ${app.buttonText === '출시예정' ? 'w-[74px]' : 'w-[68px]'} py-1.5 rounded-full text-[12px] font-bold transition flex items-center justify-center" ${(app.buttonText === '완료' || app.buttonText === '출시예정') ? 'disabled' : ''}>${app.buttonText || '받기'}</button>`
+                `<button onclick="if('${app.buttonText}' !== '완료' && '${app.buttonText}' !== '출시예정' && '${app.buttonText}' !== '미지원') { window.handleDownload(event, '${app.id}'); }" class="${(app.buttonText === '완료' || app.buttonText === '미지원') ? 'bg-gray-200 text-gray-400 cursor-default' : (app.buttonText === '출시예정' ? 'bg-blue-400 text-white cursor-default' : 'bg-blue-500 hover:bg-blue-600 text-white')} ${(app.buttonText === '출시예정' || app.buttonText === '미지원') ? 'w-[74px]' : 'w-[68px]'} py-1.5 rounded-full text-[12px] font-bold transition flex items-center justify-center" ${(app.buttonText === '완료' || app.buttonText === '출시예정' || app.buttonText === '미지원') ? 'disabled' : ''}>${app.buttonText || '받기'}</button>`
               }
             </div>
           </div>
@@ -954,6 +967,8 @@
 
     window.handleDownload = function(event, appId) {
       if (event) event.stopPropagation();
+      if (isGalaxyTabDevice) return;
+
       const targetApp = APPS.find(a => a.id === appId);
       
       if (targetApp && targetApp.buttonText === '열기') {
@@ -1084,6 +1099,11 @@
     // --- 안드로이드 앱 버전 통신 (업데이트 확인) ---
     window.checkAppVersion = function(appId, installedVersionCode) {
       const targetApp = APPS.find(a => a.id === appId);
+      if (isGalaxyTabDevice) {
+        if (targetApp) targetApp.buttonText = '미지원';
+        return;
+      }
+
       if (targetApp && targetApp.latestVersionCode) {
         if (installedVersionCode < targetApp.latestVersionCode) {
           targetApp.buttonText = '업데이트';
@@ -1097,6 +1117,8 @@
 
     // --- 앱 복귀 감지 및 상태 동기화 ---
     window.addEventListener('enjoystore-app-resume', function() {
+      if (isGalaxyTabDevice) return;
+
       if (window.EnjoyStoreNative && window.EnjoyStoreNative.getAppInfo) {
         try {
           ['enjoy_sports', 'enjoy_store_official', 'enjoy_main'].forEach(appId => {
@@ -1119,7 +1141,7 @@
     });
 
     // --- 갤럭시(Android) 앱 설치 여부 확인 로직 ---
-    if (currentCompatibility.includes('Galaxy')) {
+    if (!isGalaxyTabDevice && currentCompatibility.includes('Galaxy')) {
       // 안드로이드 스튜디오(웹뷰)에서 주입한 비밀 통신(브릿지)이 있는지 확인
       if (window.EnjoyStoreNative && window.EnjoyStoreNative.getAppInfo) {
         try {
