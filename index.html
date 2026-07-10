@@ -86,6 +86,8 @@
     // --- 기기 판별 로직 ---
     function getDeviceCompatibility() {
       const ua = navigator.userAgent;
+      const isAndroid = /Android/i.test(ua);
+      const isGalaxyTab = /SM-(?:T|X|P)\d/i.test(ua) || (isAndroid && !/Mobile/i.test(ua));
       let device = 'iPhone'; // 기본값
       if (/iPad/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1)) {
         device = 'iPad';
@@ -93,10 +95,12 @@
         device = 'iPhone';
       } else if (/Mac/i.test(ua)) {
         device = 'Mac';
-      } else if (/SM-|SAMSUNG|Galaxy/i.test(ua) || /Android/i.test(ua)) {
+      } else if (isGalaxyTab) {
+        return '이 Galaxy Tab과 호환 불가';
+      } else if (/SM-|SAMSUNG|Galaxy/i.test(ua) || isAndroid) {
         device = 'Galaxy';
       } else if (/Windows/i.test(ua)) {
-        device = 'Windows';
+        return '이 기기와 호환 불가';
       }
       return '이 ' + device + '에서 사용 가능';
     }
