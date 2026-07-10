@@ -366,6 +366,29 @@
     }
     APPS.sort((a, b) => a.id === 'enjoy_main' ? -1 : b.id === 'enjoy_main' ? 1 : 0);
 
+    const MANAGED_APP_IDS = ['enjoy_sports', 'enjoy_store_official', 'enjoy_main'];
+    const INSTALLED_VERSION_KEY_PREFIX = 'enjoystore-installed-version:';
+
+    function getSavedInstalledVersion(appId) {
+      try {
+        const savedVersion = Number(localStorage.getItem(INSTALLED_VERSION_KEY_PREFIX + appId));
+        return Number.isFinite(savedVersion) && savedVersion > 0 ? savedVersion : null;
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function saveInstalledVersion(appId, versionCode) {
+      const normalizedVersion = Number(versionCode);
+      if (!Number.isFinite(normalizedVersion) || normalizedVersion <= 0) return;
+
+      try {
+        localStorage.setItem(INSTALLED_VERSION_KEY_PREFIX + appId, String(normalizedVersion));
+      } catch (e) {
+        console.warn('앱 버전 저장 실패:', e);
+      }
+    }
+
     // --- 상태 관리 ---
     let activeTab = '투데이';
     let searchQuery = '';
@@ -974,7 +997,11 @@
       if (targetApp && targetApp.buttonText === '열기') {
         // 안드로이드 스튜디오 브릿지를 통해 해당 앱의 패키지명을 호출하여 실행합니다.
         if (window.EnjoyStoreNative && window.EnjoyStoreNative.openApp) {
-          window.EnjoyStoreNative.openApp(targetApp.packageName);
+          const didOpen = window.EnjoyStoreNative.openApp(targetApp.packageName);
+          // 이전 스토어 앱이 새 패키지를 조회하지 못하는 경우에는 인텐트로 한 번 더 실행합니다.
+          if (didOpen === false) {
+            window.location.href = `intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=${targetApp.packageName};end;`;
+          }
         } else {
           window.location.href = `intent://#Intent;action=android.intent.action.MAIN;category=android.intent.category.LAUNCHER;package=${targetApp.packageName};end;`;
         }
@@ -998,6 +1025,10 @@
             clearInterval(intervalId);
             targetApp.isDownloading = false;
             targetApp.buttonText = currentCompatibility.includes('Galaxy') ? '열기' : '완료';
+            if (currentCompatibility.includes('Galaxy')) {
+              // 설치 화면에서 돌아왔을 때 네이티브 조회가 실패해도 받은 버전을 기준으로 상태를 복원합니다.
+              saveInstalledVersion(appId, targetApp.latestVersionCode);
+            }
             
             // 완료 상태 렌더링 및 이 시점에 추후 파일 설치 로직 추가 가능
             renderMain();
@@ -1104,8 +1135,10 @@
         return;
       }
 
-      if (targetApp && targetApp.latestVersionCode) {
-        if (installedVersionCode < targetApp.latestVersionCode) {
+      const normalizedVersion = Number(installedVersionCode);
+      if (targetApp && targetApp.latestVersionCode && Number.isFinite(normalizedVersion)) {
+        saveInstalledVersion(appId, normalizedVersion);
+        if (normalizedVersion < targetApp.latestVersionCode) {
           targetApp.buttonText = '업데이트';
         } else {
           targetApp.buttonText = '열기';
@@ -1115,67 +1148,76 @@
       }
     };
 
-    // --- 앱 복귀 감지 및 상태 동기화 ---
-    window.addEventListener('enjoystore-app-resume', function() {
-      if (isGalaxyTabDevice) return;
+    // --- 설치 여부와 버전 상태를 모든 앱에 동일하게 동기화 ---
+    window.syncInstalledAppStatuses = function() {
+      if (isGalaxyTabDevice) return false;
 
-      if (window.EnjoyStoreNative && window.EnjoyStoreNative.getAppInfo) {
+      const nativeBridge = window.EnjoyStoreNative;
+      if (!nativeBridge || !nativeBridge.getAppInfo) return false;
+
+      MANAGED_APP_IDS.forEach(appId => {
+        const targetApp = APPS.find(a => a.id === appId);
+        if (!targetApp) return;
+
         try {
-          ['enjoy_sports', 'enjoy_store_official', 'enjoy_main'].forEach(appId => {
-            const targetApp = APPS.find(a => a.id === appId);
-            if (targetApp) {
-              const appInfoJson = window.EnjoyStoreNative.getAppInfo(targetApp.packageName);
-              const appInfo = JSON.parse(appInfoJson);
-              
-              if (appInfo.installed) {
-                window.checkAppVersion(appId, appInfo.versionCode);
-              } else if (appId === 'enjoy_sports' || appId === 'enjoy_main') {
-                targetApp.buttonText = '받기';
-                renderMain();
-                if (selectedApp && selectedApp.id === targetApp.id) renderModal();
-              }
-            }
-          });
-        } catch (e) { console.error(e); }
-      }
+          const appInfoResult = nativeBridge.getAppInfo(targetApp.packageName);
+          const appInfo = typeof appInfoResult === 'string' ? JSON.parse(appInfoResult) : appInfoResult;
+
+          if (appInfo && appInfo.installed) {
+            window.checkAppVersion(appId, appInfo.versionCode);
+            return;
+          }
+
+          // 구버전 스토어 APK는 엔조이 패키지 조회 권한이 없으므로 마지막으로 받은 버전을 사용합니다.
+          const savedVersion = appId === 'enjoy_main' ? getSavedInstalledVersion(appId) : null;
+          if (savedVersion !== null) {
+            window.checkAppVersion(appId, savedVersion);
+          } else {
+            targetApp.buttonText = '받기';
+            renderMain();
+            if (selectedApp && selectedApp.id === targetApp.id) renderModal();
+          }
+        } catch (e) {
+          console.error(`${targetApp.title} 앱 정보 통신 오류:`, e);
+        }
+      });
+
+      return true;
+    };
+
+    // 설치 화면이나 다른 앱에서 돌아오는 모든 경로에서 다시 확인합니다.
+    window.addEventListener('enjoystore-app-resume', window.syncInstalledAppStatuses);
+    window.addEventListener('pageshow', window.syncInstalledAppStatuses);
+    window.addEventListener('focus', window.syncInstalledAppStatuses);
+    document.addEventListener('visibilitychange', function() {
+      if (document.visibilityState === 'visible') window.syncInstalledAppStatuses();
     });
 
     // --- 갤럭시(Android) 앱 설치 여부 확인 로직 ---
     if (!isGalaxyTabDevice && currentCompatibility.includes('Galaxy')) {
-      // 안드로이드 스튜디오(웹뷰)에서 주입한 비밀 통신(브릿지)이 있는지 확인
-      if (window.EnjoyStoreNative && window.EnjoyStoreNative.getAppInfo) {
-        try {
-          ['enjoy_sports', 'enjoy_store_official', 'enjoy_main'].forEach(appId => {
+      // 안드로이드 스튜디오(웹뷰) 브릿지가 있으면 세 앱을 같은 경로로 확인합니다.
+      if (!window.syncInstalledAppStatuses()) {
+        // 일반 모바일 브라우저(크롬 등) 접속 시를 위한 기존 예비(폴백) 로직
+        const checkAndApplyOpenStatus = (installedApps) => {
+          const installedPackageNames = new Set(
+            installedApps.map(app => app.id || app.packageName).filter(Boolean)
+          );
+
+          MANAGED_APP_IDS.forEach(appId => {
             const targetApp = APPS.find(a => a.id === appId);
-            if (targetApp) {
-              // 안드로이드 시스템에 직접 패키지명으로 앱 정보를 물어봄
-              const appInfoJson = window.EnjoyStoreNative.getAppInfo(targetApp.packageName);
-              const appInfo = JSON.parse(appInfoJson);
-              
-              if (appInfo.installed) {
-                // 앱이 설치되어 있다면 기기에 깔린 버전 코드를 통신 함수로 전달!
-                window.checkAppVersion(appId, appInfo.versionCode);
-              }
+            if (targetApp && installedPackageNames.has(targetApp.packageName)) {
+              targetApp.buttonText = '열기';
             }
           });
-        } catch (e) {
-          console.error("앱 정보 통신 오류:", e);
-        }
-      } else {
-        // 일반 모바일 브라우저(크롬 등) 접속 시를 위한 기존 예비(폴백) 로직
-        const checkAndApplyOpenStatus = () => {
-          const targetApp = APPS.find(a => a.id === 'enjoy_sports');
-          if (targetApp) {
-            targetApp.buttonText = '열기';
-            renderMain(); 
-            if (selectedApp && selectedApp.id === targetApp.id) renderModal(); 
-          }
+
+          renderMain();
+          if (selectedApp) renderModal();
         };
         
         if ('getInstalledRelatedApps' in navigator) {
           navigator.getInstalledRelatedApps().then(apps => {
             if (apps && apps.length > 0) {
-              checkAndApplyOpenStatus();
+              checkAndApplyOpenStatus(apps);
             }
           }).catch(e => console.error(e));
         }
